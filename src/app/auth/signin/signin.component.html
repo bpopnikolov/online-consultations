@@ -1,0 +1,12 @@
+<form fxLayout="column" [formGroup]="sinForm" #f="ngForm" (ngSubmit)="onSubmit()">
+    <mat-input-container fxFlex="100">
+        <input matInput name="email" type="email" formControlName="email" required placeholder="Email">
+    </mat-input-container>
+    <mat-input-container fxFlex="100">
+        <input matInput name="password" type="password" required formControlName="password" placeholder="Password">
+    </mat-input-container>
+    <mat-error></mat-error>
+    <div fxFlex="33" fxFlexAlign="end">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!sinForm.valid">Sign In</button>
+    </div>
+</form>

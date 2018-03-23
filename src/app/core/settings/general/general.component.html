@@ -1,0 +1,23 @@
+<form fxLayout="column" [formGroup]="generalForm" (ngSubmit)="onSubmit()">
+    <mat-input-container fxFlex="100">
+        <input matInput name="name" type="text" formControlName="name" placeholder="Name">
+    </mat-input-container>
+    <mat-input-container fxFlex="100">
+        <input matInput name="email" type="email" formControlName="email" required placeholder="Email">
+        <mat-error>Email is invalid.</mat-error>
+    </mat-input-container>
+    <mat-input-container fxFlex="100">
+        <input matInput name="phone" type="text" formControlName="phone" placeholder="Phone">
+        <mat-error>The field accepts only numbers.</mat-error>
+    </mat-input-container>
+    <mat-input-container *ngIf="role === 'student'" fxFlex="100">
+        <input matInput name="facultyNumber" type="text" formControlName="facultyNumber" placeholder="Faculty Number">
+    </mat-input-container>
+    <mat-input-container *ngIf="role === 'teacher'" fxFlex="100">
+        <input matInput name="consultationsTime" type="text" formControlName="consultationsTime" placeholder="Consultations Time">
+    </mat-input-container>
+    <mat-error></mat-error>
+    <div fxFlex="33" fxFlexAlign="end">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!generalForm.valid">Save</button>
+    </div>
+</form>

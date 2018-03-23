@@ -1,0 +1,15 @@
+<!-- <md-grid-list fxFlex cols="4" rowHeight="250px" colWidth="150px">
+    <md-grid-tile *ngFor="let teacher of teachers" [rowspan]="1" [colspan]="1">
+        <img [src]=teacher.photo alt="model ">
+    </md-grid-tile>
+</md-grid-list> -->
+<div fxLayout="column" fxFlex fxFlexOffset="100px">
+    <!-- <md-card fxFlex *ngFor="let teacher of teachers">{{teacher.firstName}}</md-card> -->
+    <a fxFlex style="cursor: pointer;" *ngFor="let teacher of teachers">
+        <mat-card>
+            <mat-card-title>{{teacher.firstName}} {{teacher.lastName}}</mat-card-title>
+            <!-- <md-card-content></md-card-content> -->
+        </mat-card>
+    </a>
+
+</div>

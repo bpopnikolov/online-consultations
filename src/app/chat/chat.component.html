@@ -1,0 +1,71 @@
+<div fxLayout="row" fxLayoutAlign="start">
+    <div class="items-container" fxFlex fxLayout="column">
+        <mat-nav-list fxFlex="100" fxLayout="column">
+            <h3 mat-subheader>Users</h3>
+            <mat-list-item [ngClass]="{'nav-active': selectedItem == i}" *ngFor="let user of onlineUsers; let i=index" (click)="onSelectUser(user, i)">
+                <span><a >{{ user.firstname }}</a></span>
+                <span class="spacer"></span>
+                <mat-icon *ngIf="privateRoomNotifications(user)" class="notification" color="accent">fiber_manual_record</mat-icon>
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button [disabled]="!canCall(user)" (click)="onCallClick(this.chatService.userId, chatService.selectedRoom._id)" mat-menu-item>
+                      <mat-icon>call</mat-icon>
+                      <span class="spacer">Call</span>
+                        </button>
+                    <button *ngIf="callInRoom(user)" (click)="onJoinClick(this.chatService.userId, chatService.selectedRoom._id)" mat-menu-item>
+                          <mat-icon>call</mat-icon>
+                          <span class="spacer">Join Call</span>
+                            </button>
+                </mat-menu>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <h3 mat-subheader>Rooms</h3>
+            <mat-list-item [matTooltip]="showPublicRoomUsers(room)" matTooltipPosition="right" [ngClass]="{'nav-active': selectedItem == j + onlineUsers.length}" *ngFor="let room of publicRooms; let j=index" (click)="onSelectRoom(room,j)">
+                <span style="text-overflow: ellipsis; overflow: hidden;
+                white-space: nowrap;">{{ room.name }}</span>
+                <span class="spacer"></span>
+                <mat-icon *ngIf="publicRoomNotifications(room)" class="notification" color="accent">fiber_manual_record</mat-icon>
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                <mat-menu #menu="matMenu">
+                    <button (click)="openAddPersonDialog(room)" mat-menu-item>
+                      <mat-icon>person_add</mat-icon>
+                          <span class="spacer">Add Person</span>
+                        </button>
+                    <button [disabled]="!canCall(null, room)" (click)="onCallClick(this.chatService.userId, chatService.selectedRoom._id)" mat-menu-item>
+                        <mat-icon>call</mat-icon>
+                        <span class="spacer">Call</span>
+                          </button>
+                    <button *ngIf="callInRoom(null, room)" (click)="onJoinClick(this.chatService.userId, chatService.selectedRoom._id)" mat-menu-item>
+                            <mat-icon>call</mat-icon>
+                            <span class="spacer">Join Call</span>
+                      </button>
+                    <button mat-menu-item (click)="onLeaveRoomClick(room)">
+                              <mat-icon class="mdi mdi-logout"></mat-icon>
+                                  <span>Leave Room</span>
+                                </button>
+                </mat-menu>
+            </mat-list-item>
+        </mat-nav-list>
+
+    </div>
+    <div fxLayout="column" fxFlex="60" fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" class="msg-container">
+        <h1 *ngIf="!checkIfSelectedUser()">Please select a user to chat with!</h1>
+        <ng-template [ngIf]="checkIfSelectedUser()">
+            <app-chat-window></app-chat-window>
+        </ng-template>
+    </div>
+    <div>
+        <button id="newRoom" mat-mini-fab color="primary" matTooltip="Create a chat room" (click)="openNewRoomDialog()" matTooltipPosition="right">
+            <mat-icon class="mat-24" aria-label="Create new chat room" >add</mat-icon>
+        </button>
+    </div>
+</div>
+
+<!-- <button type="button" (click)="createComponent()">Create Chat</button>
+<div fxLayout="row" id="cont" fxLayoutAlign="end">
+    <app-chat-window-factory [componentData]="componentData"> </app-chat-window-factory>
+</div> -->

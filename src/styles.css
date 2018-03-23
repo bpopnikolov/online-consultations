@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic';
+@import '~mdi/css/materialdesignicons.min.css';
+
+/*uncomment this for loading icons via google web fonts.  */
+
+
+/* @import '~https://fonts.googleapis.com/icon?family=Material+Icons'; */
+
+
+/* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+    width: 100vw;
+    min-width: 450px;
+}
+
+.spacer {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid;
+    border-style: inset;
+    text-align: center;
+    height: 0px;
+    line-height: 0px;
+}
+
+.hr-title {
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #fff;
+}
+
+
+/* md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active {
+    min-width: 100px !important;
+    width: 20vw !important;
+    max-width: 250px !important;
+} */

@@ -1,0 +1,8 @@
+<div class="side-buttons" fxFlexOffset="14px">
+    <button mat-icon-button [routerLinkActive]="'active'" [routerLink]="[button.action]" [matTooltip]="button.tooltip" *ngFor="let button of sideButtons">
+        <mat-icon class="mat-24" aria-label="Example icon-button with a heart icon">{{button.icon}}</mat-icon>
+      </button>
+    <button mat-icon-button matTooltip="More" (click)="onMoreButtonClick()">
+          <mat-icon class="mat-24" aria-label="Example icon-button with a heart icon">more_horiz</mat-icon>
+        </button>
+</div>

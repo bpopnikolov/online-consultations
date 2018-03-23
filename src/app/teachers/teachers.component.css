@@ -1,0 +1,23 @@
+img {
+    width: 100%;
+    height: auto;
+}
+
+div {
+    padding: 0px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    max-width: 20vw;
+    min-width: 150px;
+}
+
+.spacer {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding-left: 100px;
+}
+
+a {
+    text-decoration: none;
+}

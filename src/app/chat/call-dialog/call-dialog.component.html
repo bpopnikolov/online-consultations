@@ -1,0 +1,20 @@
+<div fxLayout="column" fxLayoutAlign="center stretch">
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" md-dialog-content>
+        <h1 mat-dialog-title>{{caller}} is calling</h1>
+        <p>
+            <!-- {{hoursDisplay ? hoursDisplay : '00'}} : {{(minutesDisplay) && (minutesDisplay
+            <=59) ? minutesDisplay : '00'}} : {{(secondsDisplay) && (secondsDisplay <=59) ? timeToAnswer : '00'}} -->
+
+            {{'00:' + (timeToAnswer >= 10 ? timeToAnswer : '0' + timeToAnswer)}}
+        </p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center" mat-dialog-actions>
+        <button id="answer-call" (click)="onAnswerCall()" mat-fab>
+            <mat-icon  class="mat-24" aria-label="">call</mat-icon>
+          </button>
+        <div fxFlex="30" class="spacer"></div>
+        <button id="reject-call" (click)="onRejectCall()" mat-fab>
+        <mat-icon  class=" mat-24 " aria-label=" ">call_end</mat-icon>
+      </button>
+    </div>
+</div>

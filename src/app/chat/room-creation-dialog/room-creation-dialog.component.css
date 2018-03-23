@@ -1,0 +1,15 @@
+.tricky-select /deep/ .mat-input-underline {
+    display: none;
+}
+
+mat-select .mat-select-trigger {
+    float: right;
+}
+
+.mat-select {
+    display: block;
+}
+
+mat-input-container {
+    display: block;
+}

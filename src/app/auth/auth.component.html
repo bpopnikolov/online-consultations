@@ -1,0 +1,16 @@
+<div class="login-container" fxLayout="column" fxLayoutAlign="start center">
+    <mat-card>
+        <nav mat-tab-nav-bar>
+            <a mat-tab-link routerLink="signin" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" #rlaLogin="routerLinkActive" [active]="rlaLogin.isActive">
+            Sign In
+        </a>
+            <a mat-tab-link routerLink="signup" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" #rlaRegister="routerLinkActive" [active]="rlaRegister.isActive">
+            Sign Up
+        </a>
+        </nav>
+        <div style="margin-top: 10px;">
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-card>
+</div>

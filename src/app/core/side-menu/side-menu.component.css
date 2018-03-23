@@ -1,0 +1,14 @@
+.side-buttons {
+    margin-top: 20px;
+    position: absolute;
+    width: 40px;
+    display: block !important;
+}
+
+.mat-icon-button {
+    color: white;
+}
+
+.active {
+    color: #00695C;
+}

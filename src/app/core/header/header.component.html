@@ -1,0 +1,11 @@
+<mat-toolbar fxFlex class="mat-elevation-z6" color="primary">
+    <button mat-icon-button mat-tooltip="Menu" (click)="onMenuClick()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a id="title" [routerLink]="['']">Online Consultations</a>
+    <span class="spacer"></span>
+    <a id="username" *ngIf="isLoggedIn()">Hello, {{ name }}</a>
+    <a href="https://github.com/">
+        <img src="assets/GitHub-Mark-Light-32px.png" alt="GitHub" width="24" height="24">
+    </a>
+</mat-toolbar>

@@ -1,0 +1,14 @@
+<div fxFlex fxLayout="column" class="wrapper">
+    <ul #lala id="msgContainer" fxFlex="85" fxLayout="column" style="list-style: none;">
+        <div [ngClass]="alignMessageContainer(message)" *ngFor="let message of messages">
+            <li [matTooltip]="setMsgTooltip(message)" [matTooltipPosition]="setMsgTooltipPosition(message)" [ngClass]="alignMessage(message)">
+                <span [appHighlightMsg]="message.content" [appHighlightWord]="message.content">{{message.content}}</span>
+            </li>
+        </div>
+    </ul>
+    <form fxFlex="10" (keydown)="onSubmit($event)" fxLayout="column" fxLayoutAlign="end" #f="ngForm">
+        <mat-input-container fxFlex="100" id="chatInput" floatPlaceholder="never" class="input-chat-send">
+            <input matInput name="messageInput" ngModel type="text" placeholder="send a message ">
+        </mat-input-container>
+    </form>
+</div>

@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>New Room</h1>
+<div mat-dialog-content>
+    <mat-input-container>
+        <input matInput tabindex="1" required [(ngModel)]="data.roomName" placeholder="room name" type="text">
+    </mat-input-container>
+
+    <mat-input-container class="tricky-select">
+        <input matInput type="text" [ngStyle]="{'display':'none'}">
+        <mat-select placegolder="add users" [(ngModel)]="data.roomUsers" multiple>
+            <mat-option *ngFor="let user of users" [value]="user._id">{{ user.firstname + ' ' }} {{ user.lastname}}</mat-option>
+        </mat-select>
+    </mat-input-container>
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCreateClick()" tabindex="2" [disabled]="!data.roomName">Create</button>
+    <button mat-button (click)="onCancelClick()" tabindex="-1">Cancel</button>
+</div>

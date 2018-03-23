@@ -1,0 +1,7 @@
+.tricky-select /deep/ .mat-input-underline {
+    display: none;
+}
+
+.form-error{
+  color: #f44336;
+}

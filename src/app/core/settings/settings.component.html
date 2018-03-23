@@ -1,0 +1,16 @@
+<div class="settings-container" fxLayout="column" fxLayoutAlign="start center">
+    <mat-card>
+        <nav mat-tab-nav-bar>
+            <a mat-tab-link routerLink="general" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" #rlaLogin="routerLinkActive" [active]="rlaLogin.isActive">
+          General
+      </a>
+            <a mat-tab-link routerLink="changepassword" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" #rlaRegister="routerLinkActive" [active]="rlaRegister.isActive">
+          Change password
+      </a>
+        </nav>
+        <div style="margin-top: 10px;">
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-card>
+</div>

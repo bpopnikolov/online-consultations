@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Select Person/s to Add</h1>
+<div mat-dialog-content>
+    <mat-input-container class="tricky-select">
+        <input matInput type="text" [ngStyle]="{'display':'none'}">
+        <mat-select placegolder="Select users" [(ngModel)]="data.personsToAdd" multiple>
+            <mat-option *ngFor="let user of users" [value]="user._id">{{ user.firstname + ' ' }} {{ user.lastname}}</mat-option>
+        </mat-select>
+    </mat-input-container>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onAddClick()" tabindex="2" [disabled]="data.personsToAdd.length === 0">Add</button>
+    <button mat-button (click)="onCancelClick()" tabindex="-1">Cancel</button>
+</div>

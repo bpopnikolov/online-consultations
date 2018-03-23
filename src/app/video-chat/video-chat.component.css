@@ -1,0 +1,45 @@
+#main-video {
+    width: 100%;
+    height: 100%;
+}
+
+#small-videos-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.small-video {
+    width: 15%;
+    height: 15%;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+#video-container {
+    height: 40vw;
+    /* max-height: 40vw; */
+    position: relative !important;
+}
+
+video {
+    object-fit: contain;
+}
+
+.video-buttons {
+    position: absolute;
+    bottom: 10%;
+}
+
+.video-btn-default {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.video-btn-active {
+    background-color: #ffffff;
+    color: black;
+}
+
+.bg-red {
+    background-color: #f44336;
+}

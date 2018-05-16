@@ -1,17 +1,15 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import * as io from 'socket.io-client';
-
-import { ChatService } from './chat.service';
-import { ChatWindowComponent } from './chat-window/chat-window.component';
-import { SocketService } from './socket.service';
-import { SelectedUser } from './models/selectedUser.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { RoomCreationDialogComponent } from './room-creation-dialog/room-creation-dialog.component';
-import { Room } from './models/room.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import { AddPersonDialogComponent } from './add-person-dialog/add-person-dialog.component';
 import { CallDialogComponent } from './call-dialog/call-dialog.component';
+import { ChatWindowComponent } from './chat-window/chat-window.component';
+import { ChatService } from './chat.service';
+import { SelectedUser } from './models/selectedUser.model';
+import { RoomCreationDialogComponent } from './room-creation-dialog/room-creation-dialog.component';
+import { SocketService } from './socket.service';
+
 
 
 @Component({
@@ -350,7 +348,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         if (result.answerCall) {
           this.socketService.answerCall(this.userId, result.room);
           console.log('joining');
-          window.open('http://localhost:3000/call/' + result.room + '/' + 'false',
+          window.open('/call/' + result.room + '/' + 'false',
             'videoChat',
             `resizable=yes,
            toolbar=no,
@@ -369,7 +367,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onCallClick(userId: String, roomId: String) {
-    window.open('http://localhost:3000/call/' + roomId + '/' + 'true',
+    window.open('/call/' + roomId + '/' + 'true',
       'videoChat',
       `resizable=yes,
        toolbar=no,
@@ -384,7 +382,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   onJoinClick(userId: String, roomId: String) {
-    window.open('http://localhost:3000/call/' + roomId + '/' + 'false',
+    window.open('/call/' + roomId + '/' + 'false',
       'videoChat',
       `resizable=yes,
        toolbar=no,

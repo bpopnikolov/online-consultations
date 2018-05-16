@@ -12,7 +12,7 @@ import { SystemMessagesService } from 'app/system-messages/system-messages.servi
 })
 export class SignupComponent implements OnInit {
   @ViewChild('f') supForm: NgForm;
- @ViewChild('role') public role;
+  @ViewChild('role') public role;
 
   roles = [
     { value: 'student', viewValue: 'Student' },

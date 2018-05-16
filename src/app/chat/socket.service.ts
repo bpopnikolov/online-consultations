@@ -9,7 +9,6 @@ import { Message } from './models/message.model';
 @Injectable()
 export class SocketService {
 
-  private BASE_URL = 'http://localhost:3000';
   socket: SocketIOClient.Socket;
 
   constructor() {
@@ -17,7 +16,7 @@ export class SocketService {
   }
 
   connectSocket(userId: String) {
-    this.socket = io.connect(this.BASE_URL, { query: { userId: userId } });
+    this.socket = io.connect('/', { query: { userId: userId } });
   }
 
   sendMessage(message: Message) {

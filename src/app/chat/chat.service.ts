@@ -9,8 +9,6 @@ import { Room } from './models/room.model';
 @Injectable()
 export class ChatService {
 
-  private BASE_URL = 'http://localhost:3000';
-
   userId = localStorage.getItem('userId');
   onlineUsers = [];
   publicRooms: Room[] = [];
@@ -35,7 +33,7 @@ export class ChatService {
       'Authorization': token
     });
 
-    return this.http.post(this.BASE_URL + '/chat/getMessages', body, { headers: headers }).map((response: Response) => {
+    return this.http.post('/chat/getMessages', body, { headers: headers }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());

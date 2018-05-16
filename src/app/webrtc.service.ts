@@ -1,8 +1,6 @@
-import { Injectable, ElementRef, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
+import { Injectable, OnDestroy } from '@angular/core';
 import * as io from 'socket.io-client';
+
 
 
 @Injectable()
@@ -15,7 +13,7 @@ export class WebrtcService implements OnDestroy {
   stream: MediaStream;
   socket: SocketIOClient.Socket;
 
-  private BASE_URL = 'http://localhost:3000';
+  private BASE_URL = './';
 
 
   constructor() {

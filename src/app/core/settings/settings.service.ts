@@ -21,7 +21,7 @@ export class SettingsService {
       'Authorization': this.token
     });
 
-    return this.http.post('http://localhost:3000/user/getUser', body, { headers: headers }).map((response: Response) => {
+    return this.http.post('./user/getUser', body, { headers: headers }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());
@@ -40,7 +40,7 @@ export class SettingsService {
       'Authorization': this.token
     });
 
-    return this.http.post('http://localhost:3000/user/setUserProfile', body, { headers: headers }).map((response: Response) => {
+    return this.http.post('./user/setUserProfile', body, { headers: headers }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());
@@ -58,7 +58,7 @@ export class SettingsService {
       'Authorization': this.token
     });
 
-    return this.http.post('http://localhost:3000/user/changeUserPassword', body, { headers: headers }).map((response: Response) => {
+    return this.http.post('./user/changeUserPassword', body, { headers: headers }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());

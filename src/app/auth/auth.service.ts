@@ -17,7 +17,7 @@ export class AuthService {
     const body = JSON.stringify(user);
     const myHeaders = new Headers({ 'Content-Type': 'application/json' });
 
-    return this.http.post('http://localhost:3000/user/signup', body, { headers: myHeaders }).map((response: Response) => {
+    return this.http.post('./user/signup', body, { headers: myHeaders }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());
@@ -28,7 +28,7 @@ export class AuthService {
     const body = JSON.stringify(user);
     const myHeaders = new Headers({ 'Content-Type': 'application/json' });
 
-    return this.http.post('http://localhost:3000/user/signin', body, { headers: myHeaders }).map((response: Response) => {
+    return this.http.post('./user/signin', body, { headers: myHeaders }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());
@@ -41,9 +41,10 @@ export class AuthService {
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
     const myHeaders = new Headers({
-      'Content-Type': 'application/json', 'Authorization' : token  });
+      'Content-Type': 'application/json', 'Authorization': token
+    });
 
-    return this.http.post('http://localhost:3000/user/signout', body, { headers: myHeaders }).map((response: Response) => {
+    return this.http.post('./user/signout', body, { headers: myHeaders }).map((response: Response) => {
       return response.json();
     }).catch((error: Response) => {
       return Observable.throw(error.json());

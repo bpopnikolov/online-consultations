@@ -5,7 +5,7 @@
  */
 
 var app = require('./server/app');
-var debug = require('debug')('node-rest:server');
+var debug = require('debug')('http');
 var http = require('http');
 var ioServer = require('socket.io');
 var socketConfig = require('./server/config/socket');

@@ -43,7 +43,7 @@ export class VideoChatComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.webRTCService.roomId = params.id;
       this.initiator = params.initiator;
-      this.peer = new Peer(this.userId, { host: '/', port: 3000, path: '/peerjs' });
+      this.peer = new Peer(this.userId, { host: '/', path: '/' });
     });
   }
 

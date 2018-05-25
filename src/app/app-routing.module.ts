@@ -16,7 +16,7 @@ const routes: Routes = [
 
   { path: '', component: HomeComponent },
   { path: 'teachers', component: TeachersComponent },
-  { path: 'call/:id/:initiator', component: VideoChatComponent },
+  { path: 'call/:id/:initiator', loadChildren: './video-chat/video-chat.module#VideoChatModule' },
   {
     path: 'settings', component: SettingsComponent, canActivate: [CanActivateIfLoggedInGuard], children: [
       { path: '', redirectTo: 'general', pathMatch: 'full' },

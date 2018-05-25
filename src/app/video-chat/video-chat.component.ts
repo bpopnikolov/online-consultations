@@ -1,8 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer2, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { WebrtcService } from '../webrtc.service';
-import { Params, Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { element } from 'protractor';
 
 
 
@@ -12,7 +10,7 @@ import { element } from 'protractor';
   templateUrl: './video-chat.component.html',
   styleUrls: ['./video-chat.component.css']
 })
-export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
+export class VideoChatComponent implements OnInit, OnDestroy {
 
   micActive: Boolean;
   camActive: Boolean;
@@ -21,10 +19,15 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('smallVideoContainer') smallVideoContainer: ElementRef;
   @ViewChild('mySmallVideo') mySmallVideo: ElementRef;
 
-  // constraints = {
-  //   video: this.video_constraints,
-  //   audio: true
-  // };
+  constraints = {
+    video: {
+      // deviceId: camera.deviceId ? { exact: camera.deviceId } : undefined,
+      width: { ideal: 1280, max: 1920 },
+      height: { ideal: 720, max: 1080 },
+    },
+    audio: true
+  }
+
   initiator;
   userId = localStorage.getItem('userId');
   peer;
@@ -38,50 +41,22 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
     private renderer: Renderer2) {
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.webRTCService.roomId = params['id'];
-      this.initiator = params['initiator'];
-      // console.log(this.initiator);
-      this.peer = new Peer(this.userId, { key: 'd1ccubzdok6e0zfr' });
-      console.log(this.peer);
+      this.webRTCService.roomId = params.id;
+      this.initiator = params.initiator;
+      this.peer = new Peer(this.userId, { host: '/', port: 3000, path: '/peerjs' });
     });
-
-
   }
 
-  ngOnInit() {
-    if (this.initiator === 'true') {
-      navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-          console.log(devices);
-          const camera = devices.find(x => x.label.includes('Integrated Webcam'));
+  async ngOnInit() {
+    await this.getMedia(this.constraints);
 
-          const constraints = {
-            video: {
-              deviceId: camera.deviceId ? { exact: camera.deviceId } : undefined,
-              width: { min: 1024, ideal: 1280, max: 1920 },
-              height: { min: 576, ideal: 720, max: 1080 },
-            },
-            audio: true
-          }
-
-          this.getMedia(constraints);
-          this.webRTCService.socket.emit('video-socket-join-room', { userId: this.userId, roomId: this.webRTCService.roomId });
-        });
-    } else if (this.initiator === 'false') {
-      navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-          console.log(devices);
-          const camera = devices.find(x => x.label.includes('Trust'));
-          const constraints = {
-            video: { deviceId: camera.deviceId ? { exact: camera.deviceId } : undefined },
-            audio: true,
-          }
-          this.getMedia(constraints);
-        });
-    }
+    this.webRTCService.socket.emit('video-socket-join-room',
+      {
+        userId: this.userId,
+        roomId: this.webRTCService.roomId
+      });
 
     this.webRTCService.socket.on('joined-video-call', (userId) => {
-      // setTimeout(() => {
       console.log('CALLING! ' + userId);
       const call = this.peer.call(userId, this.webRTCService.stream);
       call.on('stream', (remoteStream: MediaStream) => {
@@ -90,7 +65,6 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.connectionCloseHandler(this.peer.connections[userId]);
         this.createVideoElement(userId);
       });
-      // }, 3000);
     });
 
     this.peer.on('call', (call) => {
@@ -116,36 +90,22 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('destroied');
     });
 
-
-
   }
 
-  getMedia(constraints) {
+  async getMedia(constraints) {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia(constraints)
-        .then(stream => {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-          console.log(stream.getVideoTracks());
-          this.webRTCService.stream = stream;
-          this.mainVideo.nativeElement.srcObject = stream;
-          this.mainVideo.nativeElement.muted = true;
+      console.log(stream.getVideoTracks());
+      this.webRTCService.stream = stream;
+      this.mainVideo.nativeElement.srcObject = stream;
+      this.mainVideo.nativeElement.muted = true;
 
-          this.micActive = stream.getAudioTracks()[0].enabled ? stream.getAudioTracks()[0].enabled : false;
+      this.micActive = stream.getAudioTracks()[0].enabled ?
+        stream.getAudioTracks()[0].enabled : false;
 
-          this.camActive = stream.getVideoTracks()[0].enabled ? stream.getVideoTracks()[0].enabled : false;
-
-          if (this.initiator === 'false') {
-            console.log('joined the room');
-            this.webRTCService.socket.emit('video-socket-join-room', { userId: this.userId, roomId: this.webRTCService.roomId });
-          }
-
-        }, (err) => {
-          console.log(err);
-          console.log('Trying to get media again');
-          // setTimeout(() => {
-          //   this.getMedia();
-          // }, 3000);
-        });
+      this.camActive = stream.getVideoTracks()[0].enabled ?
+        stream.getVideoTracks()[0].enabled : false;
     }
   }
 
@@ -254,7 +214,7 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
             for (const con in connections) {
               if (connections[con][0].remoteStream.id === this.mainVideo.nativeElement.srcObject.id) {
 
-                children.filter((ele, index, arr) => {
+                children.forEach((ele, index, arr) => {
                   if (ele.id === connection[con][0].peer) {
                     ele.srcObject = connection[con][0].remoteStream;
                   }
@@ -276,15 +236,6 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
-
-
-
-  ngAfterViewInit() {
-    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    // Add 'implements AfterViewInit' to the class.
-    // this.webRTCService.socket.emit('video-socket-join-room', { userId: this.userId, roomId: this.webRTCService.roomId });
-  }
-
 
   // audioAnalyser(stream: MediaStream) {
   //   let audioCtx = new AudioContext();
@@ -310,7 +261,11 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event) {
-    this.webRTCService.socket.emit('call-leave', { roomId: this.webRTCService.roomId, userId: this.userId });
+    this.webRTCService.socket.emit('call-leave',
+      {
+        roomId: this.webRTCService.roomId,
+        userId: this.userId
+      });
     this.peer.connections.forEach(connection => {
       connection.close();
     });

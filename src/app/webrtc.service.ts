@@ -13,7 +13,7 @@ export class WebrtcService implements OnDestroy {
   stream: MediaStream;
   socket: SocketIOClient.Socket;
 
-  private BASE_URL = './';
+  private BASE_URL = '/';
 
 
   constructor() {

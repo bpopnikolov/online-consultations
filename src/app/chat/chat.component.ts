@@ -31,15 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   publicRooms = [];
   privateRooms = [];
 
-  chatListSubscription: Subscription;
-  notificationsSubscribtion: Subscription;
-  roomListSubscribtion: Subscription;
-  privateRoomCreationSubscribtion: Subscription;
-  notificationsSeenSubscribtion: Subscription;
-  receiveCallSubscription: Subscription;
-  roomCallSubscription: Subscription;
-  callLeaveSubscription: Subscription;
-
+  subscribtions: Subscription[] = [];
 
   componentData: any;
 
@@ -65,21 +57,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.userId = this.chatService.userId;
     this.socketService.connectSocket(this.userId);
 
-    this.privateRoomCreationSubscribtion = this.socketService.privateRoomSelected().subscribe((data) => {
-      console.log(data);
+    const privateRoomCreationSubscribtion = this.socketService.privateRoomSelected().subscribe((data) => {
       this.chatService.setSelectedRoom(data.room);
       this.socketService.markNotificationAsSeen(data.room, this.userId);
       if (!this.chatService.privateRooms.find(x => x._id === data.room._id)) {
         this.chatService.privateRooms.push(data.room);
         this.socketService.joinRoom(data.room);
       }
-      console.log('private room selected!');
-      console.log(this.chatService.privateRooms);
-      console.log(this.chatService.selectedRoom);
-
     });
 
-    this.roomListSubscribtion = this.socketService.getRoomList(this.userId).subscribe((response) => {
+    const roomListSubscribtion = this.socketService.getRoomList(this.userId).subscribe((response) => {
       console.log(response);
       if (!response.error) {
         if (response.newRoom) {
@@ -111,8 +98,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         } else {
           this.chatService.publicRooms = response.roomList.filter((room) => {
             this.socketService.joinRoom(room);
-            console.log('joined room');
-            console.log(room);
             if (room.type !== 'system') {
               return room;
             } else {
@@ -125,25 +110,21 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
       this.publicRooms = this.chatService.publicRooms;
       this.privateRooms = this.chatService.privateRooms;
+      console.log(this.privateRooms);
     });
 
 
-    this.notificationsSubscribtion = this.socketService.getNotifcations(this.userId).subscribe((result) => {
+    const notificationsSubscribtion = this.socketService.getNotifcations(this.userId).subscribe((result) => {
       if (!result.error) {
-
         if (result.initialNotifications) {
           this.chatService.notifications = result.notifications;
-          console.log(this.chatService.notifications);
-
         } else if (result.notifications.notSeenBy.includes(this.userId)) {
           this.chatService.notifications.push(result.notifications);
-          console.log('recived new notification!');
-          console.log(result);
         }
       }
     });
 
-    this.notificationsSeenSubscribtion = this.socketService.notificationSeenResponse().subscribe((response) => {
+    const notificationsSeenSubscribtion = this.socketService.notificationSeenResponse().subscribe((response) => {
       this.chatService.notifications.filter((item, i, arr) => {
         if (item._id === response._id && response.notSeenBy.length === 0) {
           this.chatService.notifications.splice(i, 1);
@@ -153,52 +134,24 @@ export class ChatComponent implements OnInit, OnDestroy {
       })
     })
 
-    this.chatListSubscription = this.socketService.getChatList(this.userId).subscribe((response) => {
+    const chatListSubscription = this.socketService.getChatList(this.userId).subscribe((response) => {
       console.log(response);
       if (!response.error) {
-
-        if (response.singleUser) {
-
-
-          if (this.chatService.onlineUsers.length > 0) {
-            this.chatService.onlineUsers = this.chatService.onlineUsers.filter((user) => {
-              return user._id !== response.chatList._id;
-            });
-          }
-          this.chatService.onlineUsers.push(response.chatList);
-
-
-        } else if (response.userDisconnected) {
-          this.chatService.onlineUsers = this.chatService.onlineUsers.filter((user) => {
-            return user.socketId !== response.socketId;
-          });
-        } else {
-          this.chatService.onlineUsers = response.chatList.filter((user) => {
-            return user._id !== this.userId;
-          });
-        }
-
-      } else {
-        console.log('chat failed!');
+        this.onlineUsers = this.chatService.onlineUsers = response.chatList.filter((user) => {
+          return user._id !== this.userId;
+        });
       }
-      this.onlineUsers = this.chatService.onlineUsers;
-      console.log(this.onlineUsers);
     });
 
     // Call Logic
 
-    this.receiveCallSubscription = this.socketService.onReceiveCall().subscribe((response) => {
-      console.log('from observable');
-      console.log(response);
-
+    const receiveCallSubscription = this.socketService.onReceiveCall().subscribe((response) => {
       if (response.callFrom.user !== this.userId) {
         this.callDialog(response.callFrom.room, response.callFrom.user);
       }
-
     });
 
-    this.roomCallSubscription = this.socketService.onRoomCall().subscribe((room) => {
-      console.log(room);
+    const roomCallSubscription = this.socketService.onRoomCall().subscribe((room) => {
       let arrayToFilter;
 
       if (room.type === 'system') {
@@ -215,7 +168,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
     });
 
-    this.callLeaveSubscription = this.socketService.onCallLeave().subscribe((room) => {
+    const callLeaveSubscription = this.socketService.onCallLeave().subscribe((room) => {
       console.log('user left call');
       console.log(room);
       let arrayToFilter;
@@ -232,7 +185,33 @@ export class ChatComponent implements OnInit, OnDestroy {
           console.log('room in call updated');
         }
       });
-    })
+    });
+
+    const userConnectedSubscription = this.socketService.userConected().subscribe((data) => {
+      this.chatService.addOnlineUser(data);
+    });
+
+    const userDisconnectedSubscription = this.socketService.userDisconected().subscribe((data: any) => {
+      this.chatService.removeOnlineUser(data);
+    });
+
+    const onlineUsersChangedSubscription = this.chatService.onOnlineUsersChanged.subscribe((users: any) => {
+      this.onlineUsers = users;
+    });
+
+    this.subscribtions.push(
+      privateRoomCreationSubscribtion,
+      roomListSubscribtion,
+      notificationsSubscribtion,
+      notificationsSeenSubscribtion,
+      chatListSubscription,
+      receiveCallSubscription,
+      roomCallSubscription,
+      callLeaveSubscription,
+      userConnectedSubscription,
+      userDisconnectedSubscription,
+      onlineUsersChangedSubscription
+    );
   }
 
   onSelectRoom(room, index) {
@@ -257,7 +236,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     });
     this.socketService.leaveChatRoom(room._id, this.userId);
-    console.log(room);
   }
 
   onSelectUser(userSelected, index) {
@@ -450,15 +428,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // Called once, before the instance is destroyed.
-    // Add 'implements OnDestroy' to the class.
-    this.chatListSubscription.unsubscribe();
-    this.notificationsSubscribtion.unsubscribe();
-    this.roomListSubscribtion.unsubscribe();
-    this.privateRoomCreationSubscribtion.unsubscribe();
-    this.notificationsSeenSubscribtion.unsubscribe();
-    this.receiveCallSubscription.unsubscribe();
-    this.roomCallSubscription.unsubscribe();
-    this.callLeaveSubscription.unsubscribe();
+    // Add 'implements OnDestroy' to the class.;
+    this.subscribtions.forEach((sub) => sub.unsubscribe());
+    this.socketService.singOut();
   }
 
 }

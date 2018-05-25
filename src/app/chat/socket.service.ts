@@ -208,7 +208,27 @@ export class SocketService {
   rejectCall() {
     this.socket.emit('call-answer', { answer: false });
   }
+  userConected() {
+    const observable = new Observable(observer => {
+      this.socket.on('user-connected', (data) => {
+        observer.next(data);
+      });
 
+    });
+
+    return observable;
+  }
+
+  userDisconected() {
+    const observable = new Observable(observer => {
+      this.socket.on('user-disconnected', (data) => {
+        observer.next(data);
+      });
+
+    });
+
+    return observable;
+  }
 
   singOut() {
     if (this.socket) {

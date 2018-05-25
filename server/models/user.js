@@ -29,21 +29,32 @@ var UserSchema = new mongoose.Schema({
         default: 'student'
     },
     profileInfo: {
-        phone: { type: String },
-        facultyNumber: { type: String },
-        consultationsTime: { type: String },
+        phone: {
+            type: String
+        },
+        facultyNumber: {
+            type: String
+        },
+        consultationsTime: {
+            type: String
+        },
     },
     status: {
         type: String,
         enum: ['online', 'offline'],
         default: 'offline'
     },
-    socketId: {
+    socketIds: [{
         type: String
-    },
+    }],
     joinedRooms: [{
-        room: { type: Schema.Types.ObjectId, ref: 'ChatRoom' },
-        joinedAt: { type: Date }
+        room: {
+            type: Schema.Types.ObjectId,
+            ref: 'ChatRoom'
+        },
+        joinedAt: {
+            type: Date
+        }
     }]
 }, {
     timestamps: true

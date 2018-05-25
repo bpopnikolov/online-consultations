@@ -10,6 +10,7 @@ var databaseConfig = require('./config/database');
 var passport = require('passport');
 
 
+
 var appRoutes = require('./routes/app');
 var authRoutes = require('./routes/user');
 var chatRoutes = require('./routes/chat');
@@ -17,7 +18,7 @@ var chatRoutes = require('./routes/chat');
 var app = express();
 
 mongoose.connect(databaseConfig.url, {
-  useMongoClient: true
+    useMongoClient: true
 });
 
 let mc = mongoose.connection;
@@ -33,7 +34,9 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.use(favicon(path.join(__dirname, '../dist', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
 app.use(cors());
 

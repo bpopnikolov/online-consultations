@@ -9,6 +9,9 @@ var debug = require('debug')('http');
 var http = require('http');
 var ioServer = require('socket.io');
 var socketConfig = require('./server/config/socket');
+var {
+    initPeerServer
+} = require('./server/config/peer-server');
 
 
 
@@ -26,6 +29,7 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = new ioServer(server);
 socketConfig(io);
+initPeerServer(server, app);
 
 
 /**

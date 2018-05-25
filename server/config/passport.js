@@ -18,7 +18,9 @@ var localLogin = new LocalStrategy(localOptions, function(email, password, done)
             return done(err);
         }
         if (!user) {
-            return done(null, false, { error: 'Login failed. Please try again' });
+            return done(null, false, {
+                error: 'Login failed. Please try again'
+            });
         }
 
         user.comparePassword(password, function(err, isMatch) {
@@ -26,10 +28,11 @@ var localLogin = new LocalStrategy(localOptions, function(email, password, done)
                 return done(err);
             }
             if (!isMatch) {
-                return done(null, false, { error: 'Login Failed. Please try again.' });
+                return done(null, false, {
+                    error: 'Login Failed. Please try again.'
+                });
             }
 
-            user.status = 'online';
             user.save(function(err, user) {
                 if (err) {
                     return done(err);
@@ -65,6 +68,10 @@ passport.use(jwtLogin);
 
 module.exports = {
     initialize: () => passport.initialize(),
-    authenticateJWT: passport.authenticate('jwt', { session: false }),
-    authenticateCredentials: passport.authenticate('local', { session: false }),
+    authenticateJWT: passport.authenticate('jwt', {
+        session: false
+    }),
+    authenticateCredentials: passport.authenticate('local', {
+        session: false
+    }),
 };

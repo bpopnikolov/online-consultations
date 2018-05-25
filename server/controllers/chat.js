@@ -6,8 +6,6 @@ exports.getMessages = function(req, res, next) {
     const fromId = req.body.fromId;
     const toId = req.body.toId;
     var messages = {};
-    console.log(req.body);
-
 
     if (fromId === '') {
 
@@ -29,7 +27,14 @@ exports.getMessages = function(req, res, next) {
                 let startDate = room.joinedAt;
                 // console.log(startDate);
 
-                Message.find({ to: toId, createdAt: { $gte: startDate } }).sort({ timestamp: 1 }).exec(function(err, result) {
+                Message.find({
+                    to: toId,
+                    createdAt: {
+                        $gte: startDate
+                    }
+                }).sort({
+                    timestamp: 1
+                }).exec(function(err, result) {
                     if (err) {
 
                         messages.error = `Server error: ` + err;

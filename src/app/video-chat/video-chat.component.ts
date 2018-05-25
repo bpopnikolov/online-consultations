@@ -43,7 +43,19 @@ export class VideoChatComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.webRTCService.roomId = params.id;
       this.initiator = params.initiator;
-      this.peer = new Peer(this.userId, { host: '/', port: 443, path: '/peerjs' });
+      this.peer = new Peer(this.userId, {
+        host: '/', port: 443, path: '/peerjs',
+        config: {
+          'iceServers': [
+            { url: 'stun:stun1.l.google.com:19302' },
+            {
+              url: 'turn:numb.viagenie.ca',
+              credential: 'muazkh',
+              username: 'webrtc@live.com'
+            }
+          ]
+        }
+      });
     });
     console.log(this.peer);
   }

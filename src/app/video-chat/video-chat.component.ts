@@ -52,8 +52,7 @@ export class VideoChatComponent implements OnInit, OnDestroy {
       remoteVideosEl: 'small-videos-container',
       autoRequestMedia: true,
       url: 'https://signal-master-oc.herokuapp.com',
-      peerConnectionConfig: { 'iceServers': [stun, turn] },
-      peerConnectionConstraints: { 'iceServers': [stun, turn] }
+      peerConnectionConfig: { 'iceServers': [stun, turn] }
     });
     this.webrtc = webrtc;
     console.log(this.webrtc);

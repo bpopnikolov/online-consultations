@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var config = require('getconfig')
+var path = require('path');
 var os = require('os');
 var ifaces = os.networkInterfaces();
 var fs = require('fs');
@@ -23,8 +24,8 @@ app.set('port', port);
 var server = null;
 if (config.server.secure) {
     server = require('https').createServer({
-        key: fs.readFileSync(config.server.key),
-        cert: fs.readFileSync(config.server.cert),
+        key: fs.readFileSync(path.resolve(config.server.key)),
+        cert: fs.readFileSync(path.resolve(config.server.cert)),
         passphrase: config.server.password
     }, app);
 } else {

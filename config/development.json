@@ -4,8 +4,8 @@
         "port": 3000,
         "/* secure */": "/* whether this connects via https */",
         "secure": true,
-        "key": "./sslcerts/key.pem",
-        "cert": "./sslcerts/cert.pem",
+        "key": "config/sslcerts/key.pem",
+        "cert": "config/sslcerts/cert.pem",
         "password": null
     }
 }

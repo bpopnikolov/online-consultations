@@ -1,8 +1,7 @@
 <div fxFlex="100" fxLayout="column" style="height: 100vh;" fxLayoutAlign="center stretch">
     <div fxFlex="100" fxLayout="column" id="video-container">
-        <video poster="https://fbnewsroomus.files.wordpress.com/2015/04/messenger-video-call-carousel-icon.png?w=960" id="main-video" autoplay #mainVideo></video>
-        <div fxFlexAlign="end" fxLayoutAlign="end" id="small-videos-container" #smallVideoContainer>
-
+        <video poster="https://fbnewsroomus.files.wordpress.com/2015/04/messenger-video-call-carousel-icon.png?w=960" id="main-video" autoplay muted="true" #mainVideo></video>
+        <div fxFlexAlign="end" fxLayoutAlign="end" class="remote-videos" id="small-videos-container" #smallVideoContainer>
         </div>
 
         <div fxFlexAlign="center" class="video-buttons">
@@ -15,7 +14,6 @@
             <button mat-fab [ngClass]="camActive ? 'video-btn-default' : 'video-btn-active'" (click)="onCamButtonClick()">
           <mat-icon class="mat-24" aria-label="" >{{camActive ? 'videocam' : 'videocam_off'}}</mat-icon>
         </button>
-
         </div>
 
     </div>

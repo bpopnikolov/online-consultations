@@ -3,15 +3,15 @@
     height: 100%;
 }
 
-#small-videos-container {
+.remote-videos {
     position: absolute;
     bottom: 20px;
     right: 20px;
 }
 
-.small-video {
-    width: 15%;
-    height: 15%;
+.remote-videos video {
+    width: 20%;
+    height: 20%;
     margin-right: 5px;
     margin-left: 5px;
 }

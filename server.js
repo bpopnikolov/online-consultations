@@ -3,40 +3,73 @@
 /**
  * Module dependencies.
  */
-
+var os = require('os');
+var ifaces = os.networkInterfaces();
+var fs = require('fs');
 var app = require('./server/app');
 var debug = require('debug')('http');
 var http = require('http');
+var https = require('https');
 var ioServer = require('socket.io');
 var socketConfig = require('./server/config/socket');
-var {
-    initPeerServer
-} = require('./server/config/peer-server');
 
-
-
+var privateKey = fs.readFileSync('./server/certificates/key.pem', 'utf8');
+var certificate = fs.readFileSync('./server/certificates/cert.pem', 'utf8');
+var credentials = {
+    key: privateKey,
+    cert: certificate
+};
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-console.log(port);
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
+var server = https.createServer(credentials, app);
 var io = new ioServer(server);
 socketConfig(io);
-initPeerServer(server, app);
 
+Object.keys(ifaces).forEach(function(ifname) {
+    var alias = 0;
+
+    ifaces[ifname].forEach(function(iface) {
+        if ('IPv4' !== iface.family || iface.internal !== false) {
+            // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+            return;
+        }
+
+        console.log("");
+        console.log("Welcome to the Chat Sandbox");
+        console.log("");
+        console.log("Test the chat interface from this device at : ", "https://localhost:3000");
+        console.log("");
+        console.log("And access the chat sandbox from another device through LAN using any of the IPS:");
+        console.log("Important: Node.js needs to accept inbound connections through the Host Firewall");
+        console.log("");
+
+        if (alias >= 1) {
+            console.log("Multiple ipv4 addreses were found ... ");
+            // this single interface has multiple ipv4 addresses
+            console.log(ifname + ':' + alias, "https://" + iface.address + ":3000");
+        } else {
+            // this interface has only one ipv4 adress
+            console.log(ifname, "https://" + iface.address + ":3000");
+        }
+
+        ++alias;
+    });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
+var LANAccess = "0.0.0.0";
+server.listen(port, LANAccess);
 server.on('error', onError);
 server.on('listening', onListening);
 

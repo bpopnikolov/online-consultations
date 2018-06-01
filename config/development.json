@@ -3,9 +3,9 @@
     "server": {
         "port": 3000,
         "/* secure */": "/* whether this connects via https */",
-        "secure": false,
-        "key": null,
-        "cert": null,
+        "secure": true,
+        "key": "./sslcerts/key.pem",
+        "cert": "./sslcerts/cert.pem",
         "password": null
     }
 }

@@ -40,6 +40,7 @@ export class VideoChatComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const webrtc = new SimpleWebRTC({
       localVideoEl: 'main-video',
+      remoteVideosEl: 'small-videos-container',
       autoRequestMedia: true,
       url: 'https://signal-master-oc.herokuapp.com'
     });
@@ -63,7 +64,7 @@ export class VideoChatComponent implements OnInit, OnDestroy {
       console.log(video);
       console.log(peer);
       this.remoteConnections.push(peer);
-      this.createVideoElement(peer)
+      this.createVideoElement(peer);
     })
 
     // console.log(this.peer);
@@ -103,6 +104,7 @@ export class VideoChatComponent implements OnInit, OnDestroy {
       this.swapStreams(event, peer)
     });
     this.renderer.appendChild(this.smallVideoContainer.nativeElement, video);
+    console.log('video tag was created');
   }
 
   swapStreams(event, peer) {

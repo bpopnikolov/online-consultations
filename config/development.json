@@ -1,0 +1,11 @@
+{
+    "isDev": true,
+    "server": {
+        "port": 3000,
+        "/* secure */": "/* whether this connects via https */",
+        "secure": false,
+        "key": null,
+        "cert": null,
+        "password": null
+    }
+}

@@ -3,34 +3,34 @@
 /**
  * Module dependencies.
  */
+var config = require('getconfig')
 var os = require('os');
 var ifaces = os.networkInterfaces();
 var fs = require('fs');
 var app = require('./server/app');
 var debug = require('debug')('http');
-var http = require('http');
-var https = require('https');
 var ioServer = require('socket.io');
 var socketConfig = require('./server/config/socket');
-
-var privateKey = fs.readFileSync('./server/certificates/key.pem', 'utf8');
-var certificate = fs.readFileSync('./server/certificates/cert.pem', 'utf8');
-var credentials = {
-    key: privateKey,
-    cert: certificate
-};
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || config.server.port);
 app.set('port', port);
 /**
  * Create HTTP server.
  */
+var server = null;
+if (config.server.secure) {
+    server = require('https').createServer({
+        key: fs.readFileSync(config.server.key),
+        cert: fs.readFileSync(config.server.cert),
+        passphrase: config.server.password
+    }, app);
+} else {
+    server = require('http').createServer(app);
+}
 
-// var server = http.createServer(app);
-var server = https.createServer(credentials, app);
 var io = new ioServer(server);
 socketConfig(io);
 

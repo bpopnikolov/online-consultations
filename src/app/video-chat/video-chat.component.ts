@@ -38,11 +38,21 @@ export class VideoChatComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    const stun = {
+      'url': 'stun:stun.l.google.com:19302'
+    };
+
+    const turn = {
+      'url': 'turn:13.250.13.83:3478?transport=udp',
+      'username': 'YzYNCouZM1mhqhmseWk6',
+      'credential': 'YzYNCouZM1mhqhmseWk6'
+    };
     const webrtc = new SimpleWebRTC({
       localVideoEl: 'main-video',
       remoteVideosEl: 'small-videos-container',
       autoRequestMedia: true,
-      url: 'https://signal-master-oc.herokuapp.com'
+      url: 'https://signal-master-oc.herokuapp.com',
+      peerConnectionConfig: { 'iceServers': [stun, turn] }
     });
     this.webrtc = webrtc;
 

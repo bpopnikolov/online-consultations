@@ -41,6 +41,7 @@ export class VideoChatComponent implements OnInit, OnDestroy {
     const webrtc = new SimpleWebRTC({
       localVideoEl: 'main-video',
       autoRequestMedia: true,
+      url: 'https://signal-master-oc.herokuapp.com'
     });
     this.webrtc = webrtc;
 

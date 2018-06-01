@@ -13,6 +13,12 @@ var https = require('https');
 var ioServer = require('socket.io');
 var socketConfig = require('./server/config/socket');
 
+var privateKey = fs.readFileSync('./server/certificates/key.pem', 'utf8');
+var certificate = fs.readFileSync('./server/certificates/cert.pem', 'utf8');
+var credentials = {
+    key: privateKey,
+    cert: certificate
+};
 /**
  * Get port from environment and store in Express.
  */
@@ -24,7 +30,7 @@ app.set('port', port);
  */
 
 // var server = http.createServer(app);
-var server = http.createServer(app);
+var server = https.createServer(credentials, app);
 var io = new ioServer(server);
 socketConfig(io);
 
@@ -40,7 +46,7 @@ Object.keys(ifaces).forEach(function(ifname) {
         console.log("");
         console.log("Welcome to the Chat Sandbox");
         console.log("");
-        console.log(`Test the chat interface from this device at : ", "http://localhost:${port}`);
+        console.log(`Test the chat interface from this device at : ", "https://localhost:${port}`);
         console.log("");
         console.log("And access the chat sandbox from another device through LAN using any of the IPS:");
         console.log("Important: Node.js needs to accept inbound connections through the Host Firewall");
@@ -49,10 +55,10 @@ Object.keys(ifaces).forEach(function(ifname) {
         if (alias >= 1) {
             console.log("Multiple ipv4 addreses were found ... ");
             // this single interface has multiple ipv4 addresses
-            console.log(ifname + ':' + alias, "https://" + iface.address + port);
+            console.log(ifname + ':' + alias, "https://" + iface.address + ':' + port);
         } else {
             // this interface has only one ipv4 adress
-            console.log(ifname, "https://" + iface.address + port);
+            console.log(ifname, "https://" + iface.address + ':' + port);
         }
 
         ++alias;

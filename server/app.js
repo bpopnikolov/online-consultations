@@ -31,6 +31,7 @@ mc.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // uncomment after placing your favicon in /public
 app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, '../dist')));
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, '../dist', 'favicon.ico')));
 app.use(logger('dev'));

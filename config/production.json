@@ -7,5 +7,5 @@
         "key": "config/sslcerts/key.pem",
         "cert": "config/sslcerts/cert.pem",
         "password": null
-    },
+    }
 }

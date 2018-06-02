@@ -22,11 +22,10 @@ export class AppConfigService {
     return new Promise((resolve, reject) => {
       const headers = new HttpHeaders({ 'Accept': 'application/json', 'Content-Type': 'application/json', 'DataType': 'application/json' });
 
-      this.httpClient.get<any>('/config/env.json', { headers })
+      this.httpClient.get<any>('./env.json', { headers })
         .subscribe((env_data) => {
           this.env = env_data;
-
-          this.httpClient.get('/config/' + env_data.env + '.json')
+          this.httpClient.get('./' + env_data.env + '.json')
             .catch((error: any) => {
               return Observable.throw(error.json().error || 'Server error');
             })

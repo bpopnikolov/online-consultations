@@ -1,10 +1,12 @@
 import { Location } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SystemMessagesService } from 'app/system-messages/system-messages.service';
 import 'hammerjs';
+import { AppConfigService, configServiceFactory } from './app-config.service';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,13 +22,6 @@ import { SharedModule } from './shared/shared.module';
 import { SystemMessagesComponent } from './system-messages/system-messages.component';
 import { TeachersComponent } from './teachers/teachers.component';
 import { TeachersService } from './teachers/teachers.service';
-import { WebrtcService } from './webrtc.service';
-
-
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -38,6 +33,7 @@ import { WebrtcService } from './webrtc.service';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    HttpClientModule,
     AppMaterialModule,
     CoreModule,
     SharedModule,
@@ -46,13 +42,19 @@ import { WebrtcService } from './webrtc.service';
     AppRoutingModule,
   ],
   providers: [
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configServiceFactory,
+      deps: [AppConfigService],
+      multi: true,
+    },
     HeaderService,
     SystemMessagesService,
     TeachersService,
     AuthService,
     ChatService,
     SocketService,
-    WebrtcService,
     Location,
     CanActivateIfLoggedInGuard
   ],

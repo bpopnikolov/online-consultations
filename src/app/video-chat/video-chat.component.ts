@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import * as SimpleWebRTC from 'simplewebrtc';
-import { WebrtcService } from '../webrtc.service';
+import { VideoChatService } from './shared/video-chat.service';
 
 @Component({
   selector: 'app-video-chat',
@@ -12,92 +11,88 @@ export class VideoChatComponent implements OnInit, OnDestroy {
 
   micActive: Boolean = true;
   camActive: Boolean = true;
+  @ViewChild('videoContainer') videoContainer: ElementRef;
   @ViewChild('mainVideo') mainVideo: ElementRef;
-  @ViewChild('audio') audio: ElementRef;
-  @ViewChild('smallVideoContainer') smallVideoContainer: ElementRef;
-  @ViewChild('mySmallVideo') mySmallVideo: ElementRef;
+  @ViewChild('smallVideosContainer') smallVideosContainer: ElementRef;
+  mainStreamCurrElement: HTMLVideoElement = null;
 
   initiator;
   userId = localStorage.getItem('userId');
-  peer;
-  webrtc;
-  remoteStreams;
-  currentMainStream;
   remoteConnections = [];
 
+  roomId: string;
+  roomName: string;
+
   constructor(
-    private webRTCService: WebrtcService,
+    private videoChatService: VideoChatService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private renderer: Renderer2) {
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.webRTCService.roomId = params.id;
+      this.roomId = params.id;
       this.initiator = params.initiator === 'true' ? true : false;
     });
   }
 
   async ngOnInit() {
-    const stun = {
-      'url': 'stun:stun.l.google.com:19302'
-    };
-
-    const turn = {
-      'url': 'turn:13.250.13.83:3478?transport=udp',
-      'username': 'YzYNCouZM1mhqhmseWk6',
-      'credential': 'YzYNCouZM1mhqhmseWk6'
-    };
-    const webrtc = new SimpleWebRTC({
-      localVideoEl: 'main-video',
-      autoRequestMedia: true,
-      url: 'https://signal-master-oc.herokuapp.com',
-      peerConnectionConfig: { 'iceServers': [stun, turn] }
-    });
-    this.webrtc = webrtc;
-
     if (this.initiator) {
-      webrtc.createRoom(this.webRTCService.roomId, (err, name) => {
-        console.log(`Room created ${name}`);
-      })
-    } else {
+      this.roomName = await this.videoChatService.createVideoRoom(this.roomId);
     }
-    webrtc.on('localStream', (stream) => {
-      this.webRTCService.stream = stream;
+
+    this.videoChatService.onLocalSteam().subscribe(async (stream) => {
       if (!this.initiator) {
-        webrtc.joinRoom(this.webRTCService.roomId, (arg) => {
-        });
+        await this.videoChatService.joinVideoRoom(this.roomId);
       }
     });
 
-    webrtc.on('videoAdded', (video, peer) => {
-      console.log(video);
-      console.log(peer);
-      this.remoteConnections.push(peer);
-      this.createVideoElement(peer);
-    })
-
-    // console.log(this.peer);
-    this.webRTCService.socket.emit('video-socket-join-room', {
-      userId: this.userId,
-      roomId: this.webRTCService.roomId
+    this.videoChatService.onVideoAdded().subscribe((event) => {
+      this.remoteConnections.push(event.peer);
+      this.createVideoElement(event.peer);
     });
 
-    this.webRTCService.socket.on('joined-video-call', (userId) => {
+    this.videoChatService.onVideoRemoved().subscribe((event) => {
+      this.remoteConnections = this.remoteConnections.filter((peer) => {
+        return peer.id !== event.peer.id;
+      });
+      const peerVideo = document.getElementById(event.video.id);
+
+      if (this.isPeerVideoSwaped(peerVideo)) {
+        this.resetCurrentSwap();
+        this.mainStreamCurrElement = null;
+      }
+
+      this.renderer.removeChild(this.smallVideosContainer, peerVideo);
+      console.log('video removed');
+    });
+
+    this.videoChatService.socket.emit('video-socket-join-room', {
+      userId: this.userId,
+      roomId: this.roomId
+    });
+
+    this.videoChatService.socket.on('joined-video-call', (userId) => {
       console.log(this.remoteConnections);
     });
   }
 
+  isPeerVideoSwaped(peerVideo): Boolean {
+    return this.mainStreamCurrElement === peerVideo ?
+      true :
+      false;
+  }
+
   onMicButtonClick() {
     this.micActive ?
-      this.webrtc.mute() :
-      this.webrtc.unmute();
+      this.videoChatService.muteStream() :
+      this.videoChatService.unMuteStream();
     this.micActive = !this.micActive;
   }
 
   onCamButtonClick() {
     this.camActive ?
-      this.webrtc.pauseVideo() :
-      this.webrtc.resumeVideo();
+      this.videoChatService.pauseStream() :
+      this.videoChatService.resumeStream();
     this.camActive = !this.camActive;
   }
 
@@ -112,22 +107,41 @@ export class VideoChatComponent implements OnInit, OnDestroy {
     this.renderer.listen(video, 'click', (event) => {
       this.swapStreams(event, peer)
     });
-    this.renderer.appendChild(this.smallVideoContainer.nativeElement, video);
-    console.log('video tag was created');
+    this.renderer.appendChild(this.smallVideosContainer.nativeElement, video);
   }
 
   swapStreams(event, peer) {
 
-    if (this.mainVideo.nativeElement.srcObject === peer.stream) {
-      this.mainVideo.nativeElement.srcObject = this.webRTCService.stream;
+    this.resetCurrentSwap();
+
+    if (this.isPeerVideoSwaped(event.target)) {
+      this.mainStreamCurrElement = null;
+      return;
+    }
+
+    // save the current element holding the main stream;
+    this.mainStreamCurrElement = event.target;
+
+    // set remote stream to main video
+    this.mainVideo.nativeElement.srcObject = peer.stream;
+    // move local stream to target
+    event.target.srcObject = this.videoChatService.stream;
+
+    event.target.muted = true;
+    this.mainVideo.nativeElement.muted = false;
+
+  }
+
+  resetCurrentSwap(): void {
+    if (this.mainStreamCurrElement) {
+      // move back the remote stream
+      this.mainStreamCurrElement.srcObject = this.mainVideo.nativeElement.srcObject;
+
+      // set main stream to local stream
+      this.mainVideo.nativeElement.srcObject = this.videoChatService.stream;
+
+      this.mainStreamCurrElement.muted = false;
       this.mainVideo.nativeElement.muted = true;
-      event.target.srcObject = peer.stream;
-      event.target.muted = false;
-    } else {
-      this.mainVideo.nativeElement.srcObject = peer.stream;
-      this.mainVideo.nativeElement.muted = false;
-      event.target.srcObject = this.webRTCService.stream;
-      event.target.muted = true;
     }
   }
 
@@ -137,7 +151,8 @@ export class VideoChatComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event) {
-    this.webRTCService.socket.emit('call-leave', { roomId: this.webRTCService.roomId, userId: this.userId });
+    this.videoChatService.disconnect();
+    this.videoChatService.socket.emit('call-leave', { roomId: this.roomId, userId: this.userId });
   }
 
   ngOnDestroy() {

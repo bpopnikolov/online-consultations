@@ -10,7 +10,12 @@
             "assets",
             "./assets/GitHub-Mark-Light-32px.png",
             "./assets/stretched-1920-1080-476288.jpg",
-            "favicon.ico"
+            "favicon.ico",
+            {
+                "glob": "**/*",
+                "input": "../config",
+                "output": "./config/"
+            }
         ],
         "index": "index.html",
         "main": "main.ts",

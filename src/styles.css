@@ -3,12 +3,9 @@
 @import '~material-design-icons/iconfont/material-icons.css';
 @import '~https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic';
 @import '~mdi/css/materialdesignicons.min.css';
-
 /*uncomment this for loading icons via google web fonts.  */
 
-
 /* @import '~https://fonts.googleapis.com/icon?family=Material+Icons'; */
-
 
 /* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
 
@@ -17,7 +14,6 @@ body {
     margin: 0;
     font-family: Roboto, sans-serif;
     width: 100vw;
-    min-width: 450px;
 }
 
 .spacer {
@@ -42,7 +38,6 @@ body {
     font-weight: bold;
     background-color: #fff;
 }
-
 
 /* md-sidenav,
 md-sidenav.md-locked-open,

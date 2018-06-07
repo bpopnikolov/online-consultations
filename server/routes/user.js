@@ -15,12 +15,15 @@ router.post('/signout', requireToken, AuthController.logout);
 
 
 router.get('/getOnlineUsers', requireToken, UserController.getOnlineUsers);
+// router.get('/getOnlineUsers', requireToken, UserController.getOnlineUsers);
 router.post('/getUser', requireToken, UserController.getUser);
 router.post('/setUserProfile', requireToken, UserController.setUserProfile);
 router.post('/changeUserPassword', requireToken, UserController.changeUserPassword);
 
 router.post('/protected', requireToken, function(req, res, next) {
-    res.send({ content: 'Success' });
+    res.send({
+        content: 'Success'
+    });
 });
 
 module.exports = router;

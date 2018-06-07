@@ -1,0 +1,27 @@
+.table-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.filter-container {
+    min-height: 64px;
+    padding: 8px 24px 0;
+    background-color: whitesmoke
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+
+:host {
+    flex: 1 1 100%;
+    flex-direction: row;
+    max-width: 80%;
+}

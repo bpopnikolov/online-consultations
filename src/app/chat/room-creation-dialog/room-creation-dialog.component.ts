@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { ChatService } from '../chat.service';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-room-creation-dialog',
@@ -18,7 +18,7 @@ export class RoomCreationDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    this.users = this.chatService.onlineUsers;
+    this.users = this.chatService.users;
   }
 
   onCancelClick() {

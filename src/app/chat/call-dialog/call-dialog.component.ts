@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-
-import { ChatService } from '../chat.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { ChatService } from '../chat.service';
+
 
 @Component({
   selector: 'app-call-dialog',
@@ -28,6 +28,7 @@ export class CallDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.caller = this.data.user;
+    console.log(this.data.user);
     const timer = Observable.timer(0, 1000);
     this.timetSub = timer.subscribe((ticks) => {
 

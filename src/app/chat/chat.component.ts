@@ -27,7 +27,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   selectedItem;
   userId = null;
-  onlineUsers = [];
+  users = [];
   publicRooms = [];
   privateRooms = [];
 
@@ -137,7 +137,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const chatListSubscription = this.socketService.getChatList(this.userId).subscribe((response) => {
       console.log(response);
       if (!response.error) {
-        this.onlineUsers = this.chatService.onlineUsers = response.chatList.filter((user) => {
+        this.users = this.chatService.users = response.chatList.filter((user) => {
           return user._id !== this.userId;
         });
       }
@@ -147,7 +147,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     const receiveCallSubscription = this.socketService.onReceiveCall().subscribe((response) => {
       if (response.callFrom.user !== this.userId) {
-        this.callDialog(response.callFrom.room, response.callFrom.user);
+        const from = this.chatService.users.find((x) => x._id === response.callFrom.user)
+        this.callDialog(response.callFrom.room, `${from.firstname} ${from.lastname}`);
       }
     });
 
@@ -195,8 +196,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.chatService.removeOnlineUser(data);
     });
 
-    const onlineUsersChangedSubscription = this.chatService.onOnlineUsersChanged.subscribe((users: any) => {
-      this.onlineUsers = users;
+    const usersChangedSubscription = this.chatService.onUsersChanged.subscribe((users: any) => {
+      this.users = users;
     });
 
     this.subscribtions.push(
@@ -210,23 +211,23 @@ export class ChatComponent implements OnInit, OnDestroy {
       callLeaveSubscription,
       userConnectedSubscription,
       userDisconnectedSubscription,
-      onlineUsersChangedSubscription
+      usersChangedSubscription
     );
   }
 
   onSelectRoom(room, index) {
-    this.selectedItem = index + this.onlineUsers.length;
+    this.selectedItem = index + this.users.length;
     this.chatService.setSelectedRoom(room);
     this.socketService.markNotificationAsSeen(room, this.userId);
   }
 
   showPublicRoomUsers(room) {
+    const roomUserIds = new Set(room.users);
+    let users = [...this.chatService.users]
+      .filter(x => roomUserIds.has(x._id));
+    users = users.map((user) => `${user.firstname} ${user.lastname}`)
 
-    let user = '';
-    room.users.forEach(element => {
-      user += element + `\n`;
-    });
-    return user;
+    return users.join('\n');
   }
 
   onLeaveRoomClick(room) {

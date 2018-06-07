@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from '../auth.service';
-import { User } from '../user.model';
 import { Router } from '@angular/router';
 import { SystemMessagesService } from 'app/system-messages/system-messages.service';
+import { AuthService } from '../auth.service';
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-signup',
@@ -12,12 +12,6 @@ import { SystemMessagesService } from 'app/system-messages/system-messages.servi
 })
 export class SignupComponent implements OnInit {
   @ViewChild('f') supForm: NgForm;
-  @ViewChild('role') public role;
-
-  roles = [
-    { value: 'student', viewValue: 'Student' },
-    { value: 'teacher', viewValue: 'Teacher' },
-  ];
 
   constructor(private authService: AuthService, private router: Router, private SystemMsgService: SystemMessagesService) { }
 
@@ -30,13 +24,12 @@ export class SignupComponent implements OnInit {
     const lastname: string = this.supForm.value.lastname;
     const email: string = this.supForm.value.email;
     const password: string = this.supForm.value.password;
-    const role: string = this.supForm.value.role;
 
 
-    const user: User = new User(email, password, firstname, lastname, role);
+    const user: User = new User(email, password, firstname, lastname);
 
 
-    this.authService.signup(user).subscribe((result) => {
+    this.authService.signup(user).subscribe((result: any) => {
       localStorage.setItem('token', result.token);
       localStorage.setItem('userId', result.user._id);
       localStorage.setItem('name', result.user.firstname);

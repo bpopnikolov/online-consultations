@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { SettingsService } from '../settings.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SystemMessagesService } from 'app/system-messages/system-messages.service';
+import { Subscription } from 'rxjs/Subscription';
+import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-general',
@@ -27,7 +27,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
       consultationsTime: new FormControl(null)
     });
 
-    this.getProfileSubscription = this.settingsService.getProfile().subscribe((data) => {
+    this.getProfileSubscription = this.settingsService.getProfile().subscribe((data: any) => {
       this.generalForm.patchValue({
         name: data.firstname + ' ' + data.lastname,
         email: data.email,

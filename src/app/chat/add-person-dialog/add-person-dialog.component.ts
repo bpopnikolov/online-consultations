@@ -20,7 +20,7 @@ export class AddPersonDialogComponent implements OnInit {
 
   ngOnInit() {
     this.room = this.data.room;
-    this.users = this.chatService.onlineUsers.filter((ele, i, arr) => {
+    this.users = this.chatService.users.filter((ele, i, arr) => {
 
       if (!this.room.users.find(x => x === ele._id)) {
         return ele;

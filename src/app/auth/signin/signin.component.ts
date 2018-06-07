@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { SystemMessagesService } from 'app/system-messages/system-messages.service';
 import { AuthService } from '../auth.service';
 import { User } from '../user.model';
-import { SystemMessagesService } from 'app/system-messages/system-messages.service';
+
 
 @Component({
   selector: 'app-signin',
@@ -32,7 +32,7 @@ export class SigninComponent implements OnInit {
 
     const user = new User(email, password);
 
-    this.authService.signin(user).subscribe((data) => {
+    this.authService.signin(user).subscribe((data: any) => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.user._id);
       localStorage.setItem('name', data.user.firstname);
@@ -42,7 +42,7 @@ export class SigninComponent implements OnInit {
       this.router.navigate(['/']);
     },
       (error) => {
-        this.SystemMsgService.showMessage({error: true, msg:'Wrong email or password.' })
+        this.SystemMsgService.showMessage({ error: true, msg: 'Wrong email or password.' })
         this.f.resetForm();
       });
 

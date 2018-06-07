@@ -339,7 +339,9 @@ var socketConfig = function(io) {
 
                             user.socketIds.forEach((id) => {
                                 const socket = io.sockets.connected[id];
-                                socket.leave(room._id);
+                                if (socket) {
+                                    socket.leave(room._id);
+                                }
                             });
 
                             if (room.users.length === 0) {

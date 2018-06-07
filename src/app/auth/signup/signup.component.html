@@ -10,23 +10,6 @@
         <mat-error>The field is required</mat-error>
     </mat-input-container>
 
-    <!-- <div fxFlex="100" fxLayoutAlign="end" style="margin-top: 10px; margin-bottom: 10px;">
-        <md-select name="role" ngModel required placeholder="Role">
-            <md-option *ngFor="let role of roles" [value]="role.value">
-                {{ role.viewValue }}
-            </md-option>
-        </md-select>
-    </div> -->
-    <mat-form-field fxFlex="100" fxLayoutAlign="end">
-      <mat-select name="role" ngModel #role="ngModel" required placeholder="Role">
-        <mat-option *ngFor="let role of roles" [value]="role.value">
-            {{ role.viewValue }}
-        </mat-option>
-    </mat-select>
-    <mat-hint class="form-error" *ngIf="role.invalid && role.touched">The field is required</mat-hint>
-    </mat-form-field>
-
-
     <mat-input-container fxFlex="100">
         <input matInput name="email" ngModel type="email" required placeholder="Email">
         <mat-error>Invalid Email</mat-error>

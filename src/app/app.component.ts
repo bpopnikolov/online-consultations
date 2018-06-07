@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { HeaderService } from './core/header/header.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { AuthService } from './auth/auth.service';
-import { ChatComponent } from './chat/chat.component';
-import { Router } from '@angular/router';
 import { SocketService } from './chat/socket.service';
+import { HeaderService } from './core/header/header.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private socketService: SocketService) {
 
     this.router.events.subscribe((val) => {
-      if (this.location.path().toString().includes('/call') ) {
+      if (this.location.path().toString().includes('/call')) {
         this.showSideMenu = false;
       } else {
         this.showSideMenu = true;
@@ -59,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.authService.logout().subscribe((data) => {
+    this.authService.logout().subscribe((data: any) => {
       console.log(data.message + ' ' + data.status);
       localStorage.clear();
       this.socketService.singOut();

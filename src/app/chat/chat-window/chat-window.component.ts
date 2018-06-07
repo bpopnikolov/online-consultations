@@ -1,14 +1,14 @@
 
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
-import { SocketService } from '../socket.service';
-import { ChatService } from '../chat.service';
-import { SelectedUser } from '../models/selectedUser.model';
-import { Message } from '../models/message.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs/Subscription';
+import { ChatService } from '../chat.service';
+import { Message } from '../models/message.model';
+import { SelectedUser } from '../models/selectedUser.model';
+import { SocketService } from '../socket.service';
+
 
 
 @Component({
@@ -34,9 +34,7 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
 
   ngOnInit() {
     if (this.chatService.selectedRoom) {
-      this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data) => {
-        console.log('room msgs');
-        console.log(data);
+      this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data: any) => {
         this.messages = data.messages;
 
       });
@@ -44,7 +42,7 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
 
 
     this.roomSubscription = this.chatService.onRoomSelected.subscribe((user) => {
-      this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data) => {
+      this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data: any) => {
         this.messages = data.messages;
       });
     });
@@ -114,11 +112,9 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
   setMsgTooltip(message) {
     if (message.from === this.chatService.userId) {
       return 'You ' + moment(message.createdAt).calendar();
-    } else {
-
-      return this.chatService.selectedRoom.users.find(x => x === message.from) + ' ' + moment(message.createdAt).calendar();
-
     }
+    const user = this.chatService.users.find(x => x._id === message.from);
+    return `${user.firstname} ${user.lastname} ${moment(message.createdAt).calendar()}`;
   }
 
   setMsgTooltipPosition(message) {

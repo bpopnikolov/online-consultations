@@ -1,8 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Http, Headers, Response } from '@angular/http';
-import 'rxjs/Rx';
+import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 
 
 @Injectable()
@@ -10,22 +10,17 @@ export class SettingsService {
 
   private token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
   userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : '';
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getProfile() {
     const body = JSON.stringify({
       userId: this.userId
     });
-    const headers = new Headers({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': this.token
     });
 
-    return this.http.post('./user/getUser', body, { headers: headers }).map((response: Response) => {
-      return response.json();
-    }).catch((error: Response) => {
-      return Observable.throw(error.json());
-    });
+    return this.http.post('./user/getUser', body, { headers: headers })
   }
 
   setProfile(email, profileInfo) {
@@ -35,16 +30,11 @@ export class SettingsService {
       email: email,
       profileInfo: profileInfo
     });
-    const headers = new Headers({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': this.token
     });
 
-    return this.http.post('./user/setUserProfile', body, { headers: headers }).map((response: Response) => {
-      return response.json();
-    }).catch((error: Response) => {
-      return Observable.throw(error.json());
-    });
+    return this.http.post('./user/setUserProfile', body, { headers: headers })
   }
 
   changePassword(currentPassword, newPassword) {
@@ -53,15 +43,10 @@ export class SettingsService {
       currentPassword: currentPassword,
       newPassword: newPassword
     });
-    const headers = new Headers({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': this.token
     });
 
-    return this.http.post('./user/changeUserPassword', body, { headers: headers }).map((response: Response) => {
-      return response.json();
-    }).catch((error: Response) => {
-      return Observable.throw(error.json());
-    });
+    return this.http.post('./user/changeUserPassword', body, { headers: headers })
   }
 }

@@ -32,3 +32,16 @@ exports.setUsersInfo = function(users) {
     });
     return usersInfo;
 }
+
+exports.resetSocketConnections = async () => {
+    const users = await User.update({}, {
+        $set: {
+            socketIds: [],
+            status: 'offline',
+        },
+
+    }, {
+        multi: true
+    });
+    return users;
+}

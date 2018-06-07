@@ -1,41 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import {
-  MatSnackBarModule,
-  MatSidenavModule,
-  MatDialogModule,
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatStepperModule,
-  MatDatepickerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule
-} from '@angular/material';
-
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+
+
 
 @NgModule({
   imports: [
@@ -74,7 +42,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ]
 })
 export class AppMaterialModule { }

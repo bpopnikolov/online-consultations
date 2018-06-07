@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var cors = require('cors');
 var databaseConfig = require('./config/database');
 var passport = require('passport');
+var helpers = require('./utils/helper');
 
 
 
@@ -24,6 +25,9 @@ mongoose.connect(databaseConfig.url, {
 let mc = mongoose.connection;
 mc.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+helpers.resetSocketConnections().then((users) => {
+    console.log('Sockets were reseted');
+});
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'hbs');

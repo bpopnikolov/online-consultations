@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HeaderService } from './header.service';
-import { AuthService } from '../../auth/auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { AuthService } from '../../auth/auth.service';
+import { HeaderService } from './header.service';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.authService.logout().subscribe((data) => {
+    this.authService.logout().subscribe((data: any) => {
       console.log(data.message);
       localStorage.clear();
     })

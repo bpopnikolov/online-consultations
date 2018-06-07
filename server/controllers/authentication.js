@@ -22,9 +22,8 @@ function setUserInfo(request) {
     };
 }
 
-exports.login = function(req, res, next) {
-    var userInfo = setUserInfo(req.user);
-
+exports.login = (req, res, next) => {
+    const userInfo = setUserInfo(req.user);
     res.status(200).json({
         token: `JWT ${generateToken(userInfo)}`,
         user: {
@@ -34,7 +33,6 @@ exports.login = function(req, res, next) {
             status: userInfo.status
         }
     });
-
 }
 
 exports.logout = function(req, res, next) {
@@ -68,13 +66,11 @@ exports.register = function(req, res, next) {
     const lastname = req.body.lastname;
     const email = req.body.email;
     const password = req.body.password;
-    const role = req.body.role;
     const profile = {
         phone: "",
         facultyNumber: "",
         consultationsTime: ""
     };
-    const status = 'online';
 
     if (!email) {
         return res.status(422).send({
@@ -113,9 +109,7 @@ exports.register = function(req, res, next) {
             lastname: lastname,
             email: email,
             password: password,
-            role: role,
             profileInfo: profile,
-            status: status
         });
 
 
@@ -151,8 +145,8 @@ exports.roleAuthorization = function(roles) {
 
             if (err) {
                 res.status(422).json({
-                  error: true,
-                  msg: 'No user found.'
+                    error: true,
+                    msg: 'No user found.'
                 });
                 return next(err);
             }
@@ -162,8 +156,8 @@ exports.roleAuthorization = function(roles) {
             }
 
             res.status(401).json({
-              error: true,
-              msg: 'You are not authorized to view this content.'
+                error: true,
+                msg: 'You are not authorized to view this content.'
             });
             return next('Unauthorized blabla');
         });

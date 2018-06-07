@@ -8,7 +8,7 @@ import { CanActivateIfLoggedInGuard } from '../auth/authGuards/can-activate-if-l
 
 const routes: Routes = [
   {
-    path: 'chat', component: ChatComponent, canActivate: [CanActivateIfLoggedInGuard], children: [
+    path: '', component: ChatComponent, canActivate: [CanActivateIfLoggedInGuard], children: [
       { path: ':id', component: ChatWindowComponent }
     ]
   },

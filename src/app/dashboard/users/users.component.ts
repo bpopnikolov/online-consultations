@@ -1,6 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { SystemMessagesService } from '../../system-messages/system-messages.service';
 import { UsersDashboardService } from './shared/users-dashboard.service';
+
 
 @Component({
   selector: 'app-users',
@@ -12,7 +14,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
   displayedColumns = ['position', 'firstname', 'lastname', 'role'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private usersService: UsersDashboardService) { }
+  selectChanged = new EventEmitter();
+
+  constructor(
+    private usersService: UsersDashboardService,
+    public systemMsgService: SystemMessagesService) { }
 
 
   applyFilter(filterValue: string) {
@@ -24,7 +30,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.usersService.getUsers().subscribe((data: any) => {
       this.dataSource = new MatTableDataSource(data)
-      console.log(this.dataSource);
+    })
+
+    this.selectChanged.subscribe((data) => {
+      data.element.role = data.event.value;
+      this.usersService.updateUserRole(data.element).subscribe((response) => {
+        this.systemMsgService.showMessage(response)
+      })
     })
   }
 

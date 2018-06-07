@@ -6,6 +6,7 @@ var helper = require('../utils/helper');
 exports.getUsers = async (req, res, next) => {
     let users = await User.find();
     users = users.map((x) => ({
+        _id: x._id,
         firstname: x.firstname,
         lastname: x.lastname,
         email: x.email,
@@ -16,10 +17,30 @@ exports.getUsers = async (req, res, next) => {
     return res.status(200).json(users);
 }
 
+exports.updateUserRole = async (req, res, next) => {
+    const user = req.body;
+    try {
+        const updatedUser = await User.update({
+            _id: user._id
+        }, {
+            role: user.role
+        });
+    } catch (e) {
+        return res.status(400).json({
+            error: true,
+            msg: `User role wasn't updated`
+        })
+    }
+
+    return res.status(200).json({
+        error: false,
+        msg: `User role was updated`
+    });
+};
+
 exports.getUser = function(req, res, next) {
 
     const userId = req.body.userId;
-    console.log(req.body);
     User.findById({
         _id: userId
     }, function(err, user) {

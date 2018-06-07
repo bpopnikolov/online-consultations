@@ -13,23 +13,23 @@
             <mat-cell *matCellDef="let element"> {{dataSource.data.indexOf(element) + 1}} </mat-cell>
         </ng-container>
 
-        <!-- Name Column -->
+        <!-- firstname Column -->
         <ng-container matColumnDef="firstname">
             <mat-header-cell *matHeaderCellDef> Firstname </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.firstname}} </mat-cell>
         </ng-container>
 
-        <!-- Weight Column -->
+        <!-- lastname Column -->
         <ng-container matColumnDef="lastname">
             <mat-header-cell *matHeaderCellDef> Lastname</mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.lastname}} </mat-cell>
         </ng-container>
 
-        <!-- Symbol Column -->
+        <!-- Role Column -->
         <ng-container matColumnDef="role">
             <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <mat-select placeholder="role" [(value)]="element.role" panelClass="">
+                <mat-select placeholder="role" (change)="selectChanged.emit({event: $event, element: element})" [(value)]="element.role" panelClass="">
                     <mat-option value="student">student</mat-option>
                     <mat-option value="teacher">teacher</mat-option>
                     <mat-option value="admin">admin</mat-option>

@@ -13,4 +13,9 @@ export class UsersDashboardService {
   getUsers() {
     return this.http.get('/user');
   }
+
+  updateUserRole(user) {
+    const body = user;
+    return this.http.post('user/updateUserRole', user);
+  }
 }

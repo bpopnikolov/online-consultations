@@ -10,6 +10,7 @@ const requireCredentials = passportService.authenticateCredentials;
 
 router.get('', requireToken, UserController.getUsers)
 router.get('/getOnlineUsers', requireToken, UserController.getOnlineUsers);
+router.post('/updateUserRole', requireToken, UserController.updateUserRole);
 router.post('/signup', AuthController.register);
 router.post('/signin', requireCredentials, AuthController.login);
 router.post('/signout', requireToken, AuthController.logout);

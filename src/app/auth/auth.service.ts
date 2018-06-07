@@ -1,7 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { User } from './user.model';
@@ -45,6 +43,10 @@ export class AuthService {
 
   isLoggedIn() {
     return localStorage.getItem('token') !== null;
+  }
+
+  isAdmin() {
+    return localStorage.getItem('role') === 'admin' ? true : false;
   }
 
   getToken() {

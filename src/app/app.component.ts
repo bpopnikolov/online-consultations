@@ -57,10 +57,15 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.authService.isLoggedIn();
   }
 
+  isAdmin() {
+    return this.authService.isAdmin();
+  }
+
   onLogout() {
     this.authService.logout().subscribe((data: any) => {
       console.log(data.message + ' ' + data.status);
       localStorage.clear();
+      this.sidenav.close();
       this.socketService.singOut();
       this.router.navigate(['/']);
     })

@@ -1,15 +1,12 @@
-<!-- <md-grid-list fxFlex cols="4" rowHeight="250px" colWidth="150px">
-    <md-grid-tile *ngFor="let teacher of teachers" [rowspan]="1" [colspan]="1">
-        <img [src]=teacher.photo alt="model ">
-    </md-grid-tile>
-</md-grid-list> -->
-<div fxLayout="column" fxFlex fxFlexOffset="100px">
-    <!-- <md-card fxFlex *ngFor="let teacher of teachers">{{teacher.firstName}}</md-card> -->
-    <a fxFlex style="cursor: pointer;" *ngFor="let teacher of teachers">
-        <mat-card>
-            <mat-card-title>{{teacher.firstName}} {{teacher.lastName}}</mat-card-title>
-            <!-- <md-card-content></md-card-content> -->
-        </mat-card>
-    </a>
-
+<div class="teacher-container">
+    <div class="teacher-box" *ngFor="let teacher of teachers">
+        <img src="https://bodiezpro.com/wp-content/uploads/2015/09/medium-default-avatar.png" alt="" width="80" height="auto">
+        <h4>{{teacher.firstname}}<br> {{teacher.lastname}}</h4>
+        <span class="heading-desc-info">phone</span>
+        <h5>{{teacher.profileInfo.phone || 'there is no phone'}}</h5>
+        <span class="heading-desc-info">Email</span>
+        <h5>{{teacher.email}}</h5>
+        <span class="heading-desc-info">consultations time</span>
+        <h5>{{teacher.profileInfo.consultationsTime || 'close'}}</h5>
+    </div>
 </div>

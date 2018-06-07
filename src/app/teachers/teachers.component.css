@@ -1,23 +1,29 @@
-img {
-    width: 100%;
-    height: auto;
+.teacher-container {
+    display: block;
+    padding: 0px 46px;
+    text-align: center;
 }
 
-div {
-    padding: 0px;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    max-width: 20vw;
-    min-width: 150px;
+.teacher-container .teacher-box {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 180px;
+    padding: 12px 18px;
+    background-color: white;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 16px;
+    border-radius: 4px;
 }
 
-.spacer {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    padding-left: 100px;
+.teacher-box .heading-desc-info {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    display: block;
+    margin: 32px 0px 8px;
 }
 
-a {
-    text-decoration: none;
+.teacher-box h5 {
+    margin: 0px;
 }

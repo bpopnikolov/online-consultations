@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AppMaterialModule } from '../../app-material/app-material.module';
+import { UsersDashboardService } from './shared/users-dashboard.service';
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
 
@@ -11,6 +12,7 @@ import { UsersComponent } from './users.component';
     UsersRoutingModule,
     AppMaterialModule,
   ],
-  declarations: [UsersComponent]
+  declarations: [UsersComponent],
+  providers: [UsersDashboardService]
 })
 export class UsersModule { }

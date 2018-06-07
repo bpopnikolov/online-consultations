@@ -10,28 +10,36 @@
         <!-- Position Column -->
         <ng-container matColumnDef="position">
             <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{dataSource.data.indexOf(element) + 1}} </mat-cell>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        <ng-container matColumnDef="firstname">
+            <mat-header-cell *matHeaderCellDef> Firstname </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.firstname}} </mat-cell>
         </ng-container>
 
         <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-            <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+        <ng-container matColumnDef="lastname">
+            <mat-header-cell *matHeaderCellDef> Lastname</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.lastname}} </mat-cell>
         </ng-container>
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-            <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+        <ng-container matColumnDef="role">
+            <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <mat-select placeholder="role" [(value)]="element.role" panelClass="">
+                    <mat-option value="student">student</mat-option>
+                    <mat-option value="teacher">teacher</mat-option>
+                    <mat-option value="admin">admin</mat-option>
+                </mat-select>
+            </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
 </div>

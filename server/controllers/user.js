@@ -1,13 +1,32 @@
 var User = require('../models/user');
 var helper = require('../utils/helper');
 
+
+
+exports.getUsers = async (req, res, next) => {
+    let users = await User.find();
+    users = users.map((x) => ({
+        firstname: x.firstname,
+        lastname: x.lastname,
+        email: x.email,
+        role: x.role,
+        profileInfo: x.profileInfo
+    }));
+    console.log(users);
+    return res.status(200).json(users);
+}
+
 exports.getUser = function(req, res, next) {
 
     const userId = req.body.userId;
     console.log(req.body);
-    User.findById({ _id: userId }, function(err, user) {
+    User.findById({
+        _id: userId
+    }, function(err, user) {
         if (err) {
-            res.status(500).json({ error: 'Server error: ' + err });
+            res.status(500).json({
+                error: 'Server error: ' + err
+            });
         } else {
 
             const userInfo = helper.setUserInfo(user);
@@ -29,16 +48,18 @@ exports.setUserProfile = function(req, res, next) {
     User.findById(userId, function(err, user) {
 
         if (err) {
-            res.status(500).json({ error: 'Server error: ' + err });
+            res.status(500).json({
+                error: 'Server error: ' + err
+            });
         } else {
-          user.email = email;
-          user.profileInfo = profileInfo;
+            user.email = email;
+            user.profileInfo = profileInfo;
             user.save(function(err, savedUser) {
                 res.status(200).json({
-                  error: null,
-                  msg: 'Profile has been set!',
-                  user: savedUser
-              });
+                    error: null,
+                    msg: 'Profile has been set!',
+                    user: savedUser
+                });
             });
         }
     });
@@ -56,12 +77,16 @@ exports.changeUserPassword = function(req, res, next) {
     User.findById(userId, function(err, user) {
 
         if (err) {
-            res.status(500).json({ error: 'Server error: ' + err });
+            res.status(500).json({
+                error: 'Server error: ' + err
+            });
         } else if (user) {
 
             user.comparePassword(currentPassword, function(compareErr, isMatch) {
                 if (compareErr) {
-                    res.status(500).json({ error: 'Server error: ' + err });
+                    res.status(500).json({
+                        error: 'Server error: ' + err
+                    });
                 }
                 if (isMatch) {
                     if (currentPassword !== newPassword) {
@@ -95,11 +120,17 @@ exports.changeUserPassword = function(req, res, next) {
 
 exports.getOnlineUsers = function(req, res, next) {
 
-    User.find({ status: 'online' }, function(err, users) {
+    User.find({
+        status: 'online'
+    }, function(err, users) {
         if (err) {
-            res.status(500).json({ error: 'Server error: ' + err });
+            res.status(500).json({
+                error: 'Server error: ' + err
+            });
         } else {
-            res.status(200).json({ users: users });
+            res.status(200).json({
+                users: users
+            });
         }
     });
 }

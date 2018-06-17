@@ -1,17 +1,16 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Room } from './models/room.model';
 import { SelectedUser } from './models/selectedUser.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ChatService {
 
   userId = localStorage.getItem('userId');
   users = [];
+  infoUsers = [];
   publicRooms: Room[] = [];
   privateRooms: Room[] = [];
   notifications = [];

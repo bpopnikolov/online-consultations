@@ -46,7 +46,7 @@ export class GeneralComponent implements OnInit, OnDestroy {
     const email = this.generalForm.value.email;
     const phone = this.generalForm.value.phone ? this.generalForm.value.phone : '';
     const facultyNumber = this.generalForm.value.facultyNumber ? this.generalForm.value.facultyNumber : '';
-    const consultTime = this.generalForm.value.consultationsTime ? this.generalForm.value.phone : '';
+    const consultTime = this.generalForm.value.consultationsTime ? this.generalForm.value.consultationsTime : '';
 
     const profileInfo = {
       phone: phone,
@@ -55,7 +55,6 @@ export class GeneralComponent implements OnInit, OnDestroy {
     };
 
     this.settingsService.setProfile(email, profileInfo).subscribe((response) => {
-      console.log(response);
       this.systemMsgService.showMessage(response);
     });
   }

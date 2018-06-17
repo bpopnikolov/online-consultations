@@ -3,18 +3,20 @@ import { FilterUsersPipe } from './filter-users.pipe';
 import { HighlightMsgDirective } from './highlight-msg.directive';
 import { HighlightWordDirective } from './highlight-word.directive';
 
+
 @NgModule({
   declarations: [
     HighlightWordDirective,
     HighlightMsgDirective,
-    FilterUsersPipe
+    FilterUsersPipe,
   ],
   imports: [
   ],
   exports: [
     HighlightWordDirective,
     HighlightMsgDirective,
-    FilterUsersPipe
+    FilterUsersPipe,
+
   ]
 
 })

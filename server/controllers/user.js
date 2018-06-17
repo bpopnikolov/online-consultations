@@ -62,10 +62,6 @@ exports.setUserProfile = function(req, res, next) {
     const email = req.body.email;
     const profileInfo = req.body.profileInfo;
 
-    console.log(userId);
-    console.log(email);
-    console.log(profileInfo);
-
     User.findById(userId, function(err, user) {
 
         if (err) {

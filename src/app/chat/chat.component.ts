@@ -30,6 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   users = [];
   publicRooms = [];
   privateRooms = [];
+  infoUsers = [];
 
   subscribtions: Subscription[] = [];
 
@@ -135,11 +136,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     })
 
     const chatListSubscription = this.socketService.getChatList(this.userId).subscribe((response) => {
-      console.log(response);
       if (!response.error) {
         this.users = this.chatService.users = response.chatList.filter((user) => {
           return user._id !== this.userId;
         });
+        this.infoUsers = this.chatService.infoUsers = response.users;
       }
     });
 

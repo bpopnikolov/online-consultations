@@ -428,14 +428,14 @@ var socketConfig = function(io) {
             const user = await User.findById(data.userId);
 
             if (user) {
-                const onlineUsers = await User.find({
-                    status: 'online'
-                });
-                const onlineUsersInfo = helper.setUsersInfo(onlineUsers);
+                let users = await User.find();
+                users = helper.setUsersInfo(users);
+                const onlineUsersInfo = users.filter((user) => user.status === 'online');
 
                 return io.to(socket.id).emit('chat-list-response', {
                     error: false,
                     chatList: onlineUsersInfo,
+                    users
                 });
             }
         });

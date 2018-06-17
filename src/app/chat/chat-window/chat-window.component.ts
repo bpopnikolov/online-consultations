@@ -24,6 +24,7 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
   messages = [];
   roomSubscription: Subscription;
   lenght = this.messages.length;
+  subs: Subscription[] = [];
 
 
   constructor(
@@ -34,20 +35,22 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
 
   ngOnInit() {
     if (this.chatService.selectedRoom) {
-      this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data: any) => {
+      const sub1 = this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data: any) => {
         this.messages = data.messages;
 
       });
+      this.subs.push(sub1);
     }
 
 
     this.roomSubscription = this.chatService.onRoomSelected.subscribe((user) => {
-      this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data: any) => {
+      const sub2 = this.chatService.getMessages(this.chatService.userId, this.chatService.selectedRoom._id).subscribe((data: any) => {
         this.messages = data.messages;
       });
+      this.subs.push(sub2);
     });
 
-    this.socketService.receiveMessages().subscribe((data) => {
+    const sub3 = this.socketService.receiveMessages().subscribe((data) => {
 
       if ((this.chatService.selectedRoom._id === data.to) && (data.from !== this.chatService.userId)) {
         this.messages.push(data);
@@ -55,6 +58,7 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
         this.scrollToBottom();
       }
     });
+    this.subs.push(sub3);
   }
 
   ngAfterViewChecked() {
@@ -63,7 +67,6 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
     if (this.messages.length !== this.lenght) {
       this.scrollToBottom();
       this.lenght = this.messages.length;
-      console.log('SCROLL FIRED!');
     }
   }
   ngAfterViewInit() {
@@ -113,7 +116,8 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
     if (message.from === this.chatService.userId) {
       return 'You ' + moment(message.createdAt).calendar();
     }
-    const user = this.chatService.users.find(x => x._id === message.from);
+    const user = this.chatService.infoUsers.find(x => x._id === message.from);
+
     return `${user.firstname} ${user.lastname} ${moment(message.createdAt).calendar()}`;
   }
 
@@ -135,5 +139,6 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, AfterViewChec
     // Called once, before the instance is destroyed.
     // Add 'implements OnDestroy' to the class.
     this.roomSubscription.unsubscribe();
+    this.subs.forEach((s) => s.unsubscribe());
   }
 }

@@ -1,8 +1,13 @@
 <div class="home-container" fxLayout="row" fxFlex="70" fxLayoutAlign="start stretch" fxFlexOffset="20px">
     <ng-template [ngIf]="!isLoggedIn()">
-        <h1>Welcome to Online-Consultations! Please <a href="">Sign Up</a> or <a href="">Sign In</a> if you have already signed up.</h1>
+        <mat-card>
+            <h1>Welcome to Online-Consultations! Please <a [routerLink]="['auth','signup']">Sign Up</a> or <a [routerLink]="['auth','signin']">Sign In</a> if you have already signed up.</h1>
+        </mat-card>
     </ng-template>
     <ng-template [ngIf]="isLoggedIn()">
-        <h1>Welcome! <a href="">Click</a> here to start chatting.</h1>
+        <mat-card>
+            <h1>Welcome! <a [routerLink]="['chat']">Click</a> here to start chatting.</h1>
+        </mat-card>
+
     </ng-template>
 </div>

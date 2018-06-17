@@ -16,7 +16,7 @@
     </mat-input-container>
 
     <mat-input-container fxFlex="100">
-        <input matInput name="password" ngModel type="password" required placeholder="Password">
+        <input matInput name="password" #password="ngModel" ngModel type="password" required placeholder="Password">
         <mat-error>The field is required</mat-error>
     </mat-input-container>
 

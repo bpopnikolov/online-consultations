@@ -1,20 +1,18 @@
-.example-card {
-    width: 400px;
+h1 {
+    color: #323232;
+    /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); */
 }
 
-h1 {
-    color: whitesmoke;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+a {
+    color: #004e43;
 }
 
 .home-container {
-    /* background-color: #004d40; */
-    margin-left: 60px !important;
     border-radius: 2px;
     padding: 5px;
+    margin-top: 2%;
 }
 
-.example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
+:host {
+    margin-left: 60px;
 }

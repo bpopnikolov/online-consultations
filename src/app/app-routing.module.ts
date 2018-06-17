@@ -19,10 +19,11 @@ const routes: Routes = [
     loadChildren: './chat/chat.module#ChatModule',
     canActivate: [CanActivateIfLoggedInGuard]
   },
-  { path: 'teachers', component: TeachersComponent },
+  { path: 'teachers', component: TeachersComponent, canActivate: [CanActivateIfLoggedInGuard] },
   {
     path: 'call/:id/:initiator',
-    loadChildren: './video-chat/video-chat.module#VideoChatModule'
+    loadChildren: './video-chat/video-chat.module#VideoChatModule',
+    canActivate: [CanActivateIfLoggedInGuard]
   },
   {
     path: 'admin',

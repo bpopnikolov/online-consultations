@@ -28,20 +28,21 @@ export class SignupComponent implements OnInit {
 
     const user: User = new User(email, password, firstname, lastname);
 
+    console.log(this.supForm);
 
-    this.authService.signup(user).subscribe((result: any) => {
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('userId', result.user._id);
-      localStorage.setItem('name', result.user.firstname);
-      localStorage.setItem('role', result.user.role);
-      localStorage.setItem('status', result.user.status);
-      this.authService.usernameExtracted.next(result.user.firstname);
-      this.supForm.resetForm();
-      this.router.navigate(['/']);
-    }, (error) => {
-      this.SystemMsgService.showMessage(error);
-      this.supForm.resetForm();
-    });
+    // this.authService.signup(user).subscribe((result: any) => {
+    //   localStorage.setItem('token', result.token);
+    //   localStorage.setItem('userId', result.user._id);
+    //   localStorage.setItem('name', result.user.firstname);
+    //   localStorage.setItem('role', result.user.role);
+    //   localStorage.setItem('status', result.user.status);
+    //   this.authService.usernameExtracted.next(result.user.firstname);
+    //   this.supForm.resetForm();
+    //   this.router.navigate(['/']);
+    // }, (error) => {
+    //   this.SystemMsgService.showMessage(error);
+    //   this.supForm.resetForm();
+    // });
 
   }
 }

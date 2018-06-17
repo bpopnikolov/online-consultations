@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AuthRoutingModule } from './auth-routing.module';
-import { SignupComponent } from './signup/signup.component';
-import { SigninComponent } from './signin/signin.component';
-import { AuthComponent } from './auth.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
-import { HttpModule } from '@angular/http';
+import { SharedModule } from '../shared/shared.module';
+import { AuthRoutingModule } from './auth-routing.module';
+import { AuthComponent } from './auth.component';
+import { SigninComponent } from './signin/signin.component';
+import { SignupComponent } from './signup/signup.component';
+
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { HttpModule } from '@angular/http';
     FormsModule,
     AppMaterialModule,
     AuthRoutingModule,
+    SharedModule
   ],
   exports: [
   ]

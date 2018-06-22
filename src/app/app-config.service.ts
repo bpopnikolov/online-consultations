@@ -37,7 +37,6 @@ export class AppConfigService {
 
     });
   }
-
   /**
    * Returns environment variable based on given key
    *
